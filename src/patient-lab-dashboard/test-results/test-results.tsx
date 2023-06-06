@@ -19,7 +19,7 @@ import {fetcher, getTestResults, swrOptions} from '../../utils/api-utils'
 import {getTestName} from '../../utils/helperFunctions'
 import DoctorListDropdown from '../doctors-list-dropdown/doctor-list-dropdown'
 import {saveTestDiagnosticReport} from '../upload-report/upload-report.resources'
-import {Datatype, TestResultsLabOrder} from '../../types'
+import {TestResultsLabOrder} from '../../types'
 
 interface TestResultProps {
   saveHandler: Function
@@ -71,7 +71,6 @@ const TestResults: React.FC<TestResultProps> = ({
     !reportDate || !doctor || !isValidDataPreset() || isSaveButtonClicked
 
   const getTestData = test => {
-    console.log('test', test)
     for (let index = 0; index < testResultData.length; index++) {
       if (testResultData[index].data.uuid === test.conceptUuid) {
         return testResultData[index].data
@@ -123,8 +122,6 @@ const TestResults: React.FC<TestResultProps> = ({
     return true
   }
 
-
-
   const renderButtonGroup = () => (
     <div className={styles.overlayButtons}>
       <Button onClick={handleDiscard} kind="secondary" size="lg">
@@ -141,14 +138,11 @@ const TestResults: React.FC<TestResultProps> = ({
       </Button>
     </div>
   )
-
   const saveTestResults = async () => {
-    console.log('Inside saveTestResults')
     const ac = new AbortController()
     let allSuccess: boolean = true
     try {
       for (let index = 0; index < selectedPendingOrder.length; index++) {
-        console.log('first', selectedPendingOrder[index])
         const response = await saveTestDiagnosticReport(
           undefined,
           patientUuid,
@@ -169,7 +163,7 @@ const TestResults: React.FC<TestResultProps> = ({
       allSuccess = false
     }
     if (allSuccess) {
-      setLabResult(new Map())
+      // setLabResult(new Map())
       saveHandler(true)
     } else {
       saveHandler(false)

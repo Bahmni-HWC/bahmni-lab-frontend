@@ -3,15 +3,15 @@ import {render, screen, waitFor} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import React from 'react'
 import {SWRConfig} from 'swr'
+import {
+  mockPanelTestResult,
+  mockSelectedPendingOrder,
+} from '../../__mocks__/testResults'
 import {LabTestResultsProvider} from '../../context/lab-test-results-context'
 import {PendingLabOrdersProvider} from '../../context/pending-orders-context'
 import {UploadReportProvider} from '../../context/upload-report-context'
 import {localStorageMock} from '../../utils/test-utils'
 import TestResults from './test-results'
-import {
-  mockPanelTestResult,
-  mockSelectedPendingOrder,
-} from '../../__mocks__/testResults'
 
 jest.mock('../../context/pending-orders-context', () => ({
   ...jest.requireActual('../../context/pending-orders-context'),
@@ -136,7 +136,6 @@ describe('TestResults Report', () => {
     expect(currentDay.className).not.toMatch(/-disabled/i)
     expect(futureDate.className).toMatch(/-disabled/i)
   })
-
   it('should indicate when the entered value is abnormal', async () => {
     localStorage.setItem('i18nextLng', 'en')
     const mockedLayout = useLayoutType as jest.Mock
@@ -173,8 +172,7 @@ describe('TestResults Report', () => {
     const mockedLayout = useLayoutType as jest.Mock
     mockedLayout.mockReturnValue('desktop')
     const mockedOpenmrsFetch = openmrsFetch as jest.Mock
-    mockedOpenmrsFetch
-      .mockReturnValue(mockPanelTestResult)
+    mockedOpenmrsFetch.mockReturnValue(mockPanelTestResult)
 
     renderWithContextProvider(
       <TestResults
@@ -189,7 +187,102 @@ describe('TestResults Report', () => {
         screen.getAllByPlaceholderText(/Input Text/i)[0],
       ).toBeInTheDocument(),
     )
-    expect(screen.getAllByPlaceholderText(/Input Text/i).length).toBe(2)
+    expect(screen.getAllByPlaceholderText(/Input Text/i).length).toBe(3)
+  })
+  it('should indicate error message when user enters invalid data', async () => {
+    localStorage.setItem('i18nextLng', 'en')
+    const mockedLayout = useLayoutType as jest.Mock
+    mockedLayout.mockReturnValue('desktop')
+    const mockedOpenmrsFetch = openmrsFetch as jest.Mock
+    mockedOpenmrsFetch.mockReturnValue(mockPanelTestResult)
+
+    renderWithContextProvider(
+      <TestResults
+        closeHandler={closeHandler}
+        saveHandler={saveHandler}
+        header={'Test Header'}
+        patientUuid={'123'}
+      />,
+    )
+    await waitFor(() =>
+      expect(
+        screen.getAllByPlaceholderText(/Input Text/i)[0],
+      ).toBeInTheDocument(),
+    )
+
+    expect(
+      screen.getByRole('button', {name: /save and upload/i}),
+    ).toBeDisabled()
+
+    userEvent.type(screen.getAllByPlaceholderText(/Input Text/i)[0], '10')
+    userEvent.type(screen.getAllByPlaceholderText(/Input Text/i)[1], '22')
+    userEvent.type(screen.getAllByPlaceholderText(/Input Text/i)[2], 'pos')
+
+    expect(screen.getAllByPlaceholderText(/Input Text/i)[2]).toBeInvalid()
+    expect(screen.getByText(/please enter valid data/i)).toBeInTheDocument()
+
+    userEvent.clear(screen.getAllByPlaceholderText(/Input Text/i)[2])
+    userEvent.type(screen.getAllByPlaceholderText(/Input Text/i)[2], 'positive')
+
+    expect(screen.getAllByPlaceholderText(/Input Text/i)[2]).not.toBeInvalid()
+    expect(
+      screen.queryByText(/please enter valid data/i),
+    ).not.toBeInTheDocument()
+  })
+  it('should disable save and upload button when user entered invalid data', async () => {
+    localStorage.setItem('i18nextLng', 'en')
+    const mockedLayout = useLayoutType as jest.Mock
+    mockedLayout.mockReturnValue('desktop')
+    const mockedOpenmrsFetch = openmrsFetch as jest.Mock
+    mockedOpenmrsFetch.mockReturnValue(mockPanelTestResult)
+
+    renderWithContextProvider(
+      <TestResults
+        closeHandler={closeHandler}
+        saveHandler={saveHandler}
+        header={'Test Header'}
+        patientUuid={'123'}
+      />,
+    )
+    await waitFor(() =>
+      expect(
+        screen.getAllByPlaceholderText(/Input Text/i)[0],
+      ).toBeInTheDocument(),
+    )
+
+    expect(
+      screen.getByRole('button', {name: /save and upload/i}),
+    ).toBeDisabled()
+
+    userEvent.type(screen.getAllByPlaceholderText(/Input Text/i)[0], 'numeric')
+    userEvent.type(screen.getAllByPlaceholderText(/Input Text/i)[1], '22')
+    userEvent.type(screen.getAllByPlaceholderText(/Input Text/i)[2], 'positive')
+
+    expect(screen.getAllByPlaceholderText(/Input Text/i)[0]).toBeInvalid()
+
+    userEvent.click(
+      screen.getByRole('textbox', {
+        name: /report date/i,
+      }),
+    )
+    const currentDay: string = getFormatedDate(0)
+    userEvent.click(screen.getByLabelText(currentDay))
+    expect(
+      screen.getByRole('textbox', {
+        name: /report date/i,
+      }),
+    ).toHaveValue(
+      new Date(currentDay).toLocaleDateString('en', {
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+      }),
+    )
+    expect(screen.getByText('Superman')).toBeInTheDocument()
+
+    expect(
+      screen.getByRole('button', {name: /save and upload/i}),
+    ).toBeDisabled()
   })
 })
 

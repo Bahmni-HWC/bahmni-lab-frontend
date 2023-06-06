@@ -601,7 +601,7 @@ describe('Patient lab details', () => {
     await waitFor(() =>
       expect(screen.getByPlaceholderText(/Input Text/i)).toBeInTheDocument(),
     )
-    userEvent.type(screen.getByPlaceholderText(/Input Text/i), value)
+    userEvent.type(screen.getByPlaceholderText(/Input Text/i), 'false')
 
     userEvent.click(
       screen.getByRole('textbox', {
@@ -680,7 +680,7 @@ describe('Patient lab details', () => {
     await waitFor(() =>
       expect(screen.getByPlaceholderText(/Input Text/i)).toBeInTheDocument(),
     )
-    userEvent.type(screen.getByPlaceholderText(/Input Text/i), value)
+    userEvent.type(screen.getByPlaceholderText(/Input Text/i), 'true')
 
     expect(await screen.findByText(/Super Man/i)).toBeInTheDocument()
 

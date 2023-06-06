@@ -1,6 +1,6 @@
 export const mockTestResultResponse: any = {
   data: {
-    uuid: '1356AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA',
+    uuid: '07a128f7-f596-45d5-a2a9-c447bc9e5112',
     name: {
       display: 'HIV Test',
       uuid: '1451BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB',
@@ -718,12 +718,121 @@ export const mockPanelTestResult = {
         answers: [],
         setMembers: [],
         resourceVersion: '2.0',
-      }
+      },
+      {
+        uuid: '1643AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA',
+        name: {
+          display: 'Rapid test for malaria',
+          uuid: '1923BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB',
+          name: 'Rapid test for malaria',
+          locale: 'en',
+          localePreferred: true,
+          conceptNameType: 'FULLY_SPECIFIED',
+          links: [],
+          resourceVersion: '1.9',
+        },
+        names: [
+          {
+            display: 'RDT Malaria',
+            uuid: '86926BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB',
+            name: 'RDT Malaria',
+            locale: 'en',
+            localePreferred: false,
+            conceptNameType: 'SHORT',
+            links: [],
+            resourceVersion: '1.9',
+          },
+        ],
+        set: false,
+        datatype: {
+          uuid: '8d4a48b6-c2cc-11de-8d13-0010c6dffd0f',
+          display: 'Coded',
+          name: 'Coded',
+          description:
+            'Value determined by term dictionary lookup (i.e., term identifier)',
+          hl7Abbreviation: 'CWE',
+          retired: false,
+          links: [],
+          resourceVersion: '1.8',
+        },
+        conceptClass: {
+          uuid: '8d4907b2-c2cc-11de-8d13-0010c6dffd0f',
+          display: 'Test',
+          name: 'Test',
+          description: 'Lab Tests',
+          retired: false,
+          links: [
+            {
+              rel: 'self',
+              uri:
+                'http://localhost/openmrs/ws/rest/v1/conceptclass/8d4907b2-c2cc-11de-8d13-0010c6dffd0f',
+              resourceAlias: 'conceptclass',
+            },
+          ],
+          resourceVersion: '1.8',
+        },
+        hiNormal: null,
+        hiAbsolute: null,
+        hiCritical: null,
+        lowNormal: null,
+        lowAbsolute: null,
+        lowCritical: null,
+        units: null,
+        allowDecimal: null,
+        handler: null,
+        descriptions: [
+          {
+            display: 'Test for rapid diagnosis of Malaria.',
+            uuid: '1483FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF',
+            description: 'Test for rapid diagnosis of Malaria.',
+            locale: 'en',
+            links: [
+              {
+                rel: 'self',
+                uri:
+                  'http://localhost/openmrs/ws/rest/v1/concept/1643AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA/description/1483FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF',
+                resourceAlias: 'description',
+              },
+            ],
+            resourceVersion: '1.9',
+          },
+        ],
+        answers: [
+          {
+            uuid: '703AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA',
+            name: {
+              display: 'Positive',
+              uuid: '737BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB',
+              name: 'Positive',
+              locale: 'en',
+              localePreferred: true,
+              conceptNameType: 'FULLY_SPECIFIED',
+              links: [],
+              resourceVersion: '1.9',
+            },
+            names: [
+              {
+                display: 'Positive',
+                uuid: '737BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB',
+                name: 'Positive',
+                locale: 'en',
+                localePreferred: true,
+                conceptNameType: 'FULLY_SPECIFIED',
+                links: [],
+                resourceVersion: '1.9',
+              }
+            ],
+            displayString: 'Positive',
+            resourceVersion: '2.0',
+          },
+        ],
+        setMembers: [],
+        resourceVersion: '2.0',
+      },
     ],
     resourceVersion: '2.0',
   },
 }
-
 
 export const mockSelectedPendingOrder = [
   {
