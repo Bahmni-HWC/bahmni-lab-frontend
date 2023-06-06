@@ -1,5 +1,5 @@
 import {FetchResponse} from '@openmrs/esm-framework'
-import {Contained, PendingLabOrders} from '../../types'
+import {Contained, Datatype, PendingLabOrders} from '../../types'
 import {LabTest} from '../../types/selectTest'
 import {
   postApiCall,
@@ -167,7 +167,8 @@ export function saveTestDiagnosticReport(
   reportConclusion: string,
   ac: AbortController,
   selectedPendingOrder: PendingLabOrders,
-  labResult?: Map<string, {value: string; abnormal: boolean}>,
+  labResult: Map<string, {value: string; abnormal?: boolean; codableConceptUuid? : string}>,
+  dataType: Datatype,
 ) {
   let basedOn: Array<BasedOnType> = null
   if (selectedPendingOrder)
@@ -210,9 +211,6 @@ export function saveTestDiagnosticReport(
         subject: {
           reference: 'Patient/' + patientUuid,
         },
-        valueQuantity: {
-          value: labResult.get(selectedPendingOrder.conceptUuid)?.value,
-        },
       },
     ],
     result: [
@@ -221,6 +219,23 @@ export function saveTestDiagnosticReport(
         type: 'Observation',
       },
     ],
+  }
+  if (dataType.name == 'Boolean') {
+    requestBody.contained[0].valueBoolean =
+      labResult.get(selectedPendingOrder.conceptUuid)?.value == 'true'
+  } else if (dataType.name == 'Numeric') {
+    requestBody.contained[0].valueQuantity = {
+      value: labResult.get(selectedPendingOrder.conceptUuid)?.value,
+    }
+  } else if (dataType.name == 'Coded') {
+    requestBody.contained[0].valueCodeableConcept = {
+      coding: [
+        {
+          code: labResult.get(selectedPendingOrder.conceptUuid)?.codableConceptUuid,
+          display: labResult.get(selectedPendingOrder.conceptUuid)?.value,
+        },
+      ],
+    }
   }
 
   if (reportConclusion) {

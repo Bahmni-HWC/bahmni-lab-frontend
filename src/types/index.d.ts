@@ -175,7 +175,16 @@ interface Contained {
     ]
   }
   subject: Subject
-  valueQuantity: ValueQuantity
+  valueQuantity?: ValueQuantity
+  valueCodeableConcept?: {
+      coding: [
+        {
+          code: string
+          display: string
+        },
+      ]
+  }
+  valueBoolean?: boolean
 }
 
 export interface TestResultsLabOrder {

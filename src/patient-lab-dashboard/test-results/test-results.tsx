@@ -19,7 +19,7 @@ import {fetcher, getTestResults, swrOptions} from '../../utils/api-utils'
 import {getTestName} from '../../utils/helperFunctions'
 import DoctorListDropdown from '../doctors-list-dropdown/doctor-list-dropdown'
 import {saveTestDiagnosticReport} from '../upload-report/upload-report.resources'
-import {TestResultsLabOrder} from '../../types'
+import {Datatype, TestResultsLabOrder} from '../../types'
 
 interface TestResultProps {
   saveHandler: Function
@@ -46,6 +46,8 @@ const TestResults: React.FC<TestResultProps> = ({
     boolean
   >(true)
   const [isSaveButtonClicked, setIsSaveButtonClicked] = useState(false)
+  const [labResult, setLabResult] = useState(new Map())
+
   const testResultData = []
   const handleDiscard = () => {
     setReportDate(null)
@@ -55,8 +57,6 @@ const TestResults: React.FC<TestResultProps> = ({
     setShowReportConclusionLabel(true)
     setLabResult(new Map())
   }
-
-  const [labResult, setLabResult] = useState(new Map())
 
   selectedPendingOrder.forEach(selectedPendingOrder => {
     // eslint-disable-next-line
@@ -70,14 +70,60 @@ const TestResults: React.FC<TestResultProps> = ({
   const isDisabled = () =>
     !reportDate || !doctor || !isValidDataPreset() || isSaveButtonClicked
 
+  const getTestData = test => {
+    console.log('test', test)
+    for (let index = 0; index < testResultData.length; index++) {
+      if (testResultData[index].data.uuid === test.conceptUuid) {
+        return testResultData[index].data
+      }
+    }
+  }
+
+  const isInvalid = test => {
+    if (labResult.get(test.uuid)?.value !== '') {
+      const datatype = test?.datatype.name
+      if (
+        datatype === 'Coded' &&
+        labResult.get(test.uuid)?.codableConceptUuid === undefined
+      ) {
+        return true
+      } else if (
+        datatype === 'Numeric' &&
+        isNaN(labResult.get(test.uuid)?.value)
+      ) {
+        return true
+      } else if (
+        datatype === 'Boolean' &&
+        labResult.get(test.uuid)?.value.toLowerCase() !== 'true' &&
+        labResult.get(test.uuid)?.value.toLowerCase() !== 'false'
+      ) {
+        return true
+      }
+    }
+    return false
+  }
+
   const isValidDataPreset = () => {
     if (labResult.size == 0 || labResult.size !== selectedPendingOrder.length)
       return false
+
     for (let mapEntry of labResult.values()) {
       if (mapEntry.value === '') return false
     }
+
+    for (let index = 0; index < testResultData.length; index++) {
+      for (let mapEntry of labResult.keys())
+        if (testResultData[index].data.uuid === mapEntry) {
+          if (isInvalid(testResultData[index].data)) {
+            return false
+          }
+        }
+    }
+
     return true
   }
+
+
 
   const renderButtonGroup = () => (
     <div className={styles.overlayButtons}>
@@ -96,14 +142,13 @@ const TestResults: React.FC<TestResultProps> = ({
     </div>
   )
 
-  const getSelectedPendingOrderTest = index => {
-    return selectedPendingOrder[index]
-  }
   const saveTestResults = async () => {
+    console.log('Inside saveTestResults')
     const ac = new AbortController()
     let allSuccess: boolean = true
     try {
       for (let index = 0; index < selectedPendingOrder.length; index++) {
+        console.log('first', selectedPendingOrder[index])
         const response = await saveTestDiagnosticReport(
           undefined,
           patientUuid,
@@ -111,8 +156,9 @@ const TestResults: React.FC<TestResultProps> = ({
           reportDate,
           reportConclusion,
           ac,
-          getSelectedPendingOrderTest(index),
+          selectedPendingOrder[index],
           labResult,
+          getTestData(selectedPendingOrder[index]).datatype,
         )
         if (allSuccess && !response.ok) {
           allSuccess = false
@@ -142,35 +188,59 @@ const TestResults: React.FC<TestResultProps> = ({
   }
   const isAbnormal = (value, test) => {
     return (
-      (value < test.lowNormal || value > test.hiNormal) &&
       test.lowNormal !== null &&
-      test.hiNormal !== null
+      test.hiNormal !== null &&
+      (value < test.lowNormal || value > test.hiNormal)
     )
   }
-  const updateOrStoreLabResult = (value, test) => {
-    if (value !== null || value !== undefined || !isNaN(value)) {
-      isAbnormal(value, test)
-        ? setLabResult(
-            map =>
-              new Map(
-                map.set(test.uuid, {
-                  value: value,
-                  abnormal: true,
-                }),
-              ),
-          )
-        : setLabResult(
-            map =>
-              new Map(
-                map.set(test.uuid, {
-                  value: value,
-                  abnormal: false,
-                }),
-              ),
-          )
+
+  const getConceptUuidForAnswer = (test, value) => {
+    const dataType = test?.datatype.name
+
+    if (dataType === 'Coded') {
+      const answers = test?.answers
+      for (let index = 0; index < answers.length; index++) {
+        if (answers[index].name.name.toLowerCase() === value.toLowerCase())
+          return answers[index].uuid
+      }
     }
   }
-  const getValue = (labResult, test) => labResult.get(test.uuid)?.value ?? ''
+
+  const updateOrStoreLabResult = (value, test) => {
+    if (value !== null || value !== undefined || !isNaN(value)) {
+      if (isAbnormal(value, test)) {
+        setLabResult(
+          map =>
+            new Map(
+              map.set(test.uuid, {
+                value: value,
+                abnormal: true,
+              }),
+            ),
+        )
+      } else if (test?.datatype.name === 'Coded') {
+        setLabResult(
+          map =>
+            new Map(
+              map.set(test.uuid, {
+                value: value,
+                codableConceptUuid: getConceptUuidForAnswer(test, value),
+              }),
+            ),
+        )
+      } else
+        setLabResult(
+          map =>
+            new Map(
+              map.set(test.uuid, {
+                value: value,
+              }),
+            ),
+        )
+    }
+  }
+
+  const getValue = test => labResult.get(test.uuid)?.value ?? ''
 
   const renderInputField = (test, index) => {
     if (test) {
@@ -184,7 +254,9 @@ const TestResults: React.FC<TestResultProps> = ({
             size="sm"
             onChange={e => updateOrStoreLabResult(e.target.value, test)}
             style={labResult.get(test.uuid)?.abnormal ? {color: 'red'} : {}}
-            value={getValue(labResult, test)}
+            value={getValue(test)}
+            invalid={labResult.size != 0 && isInvalid(test)}
+            invalidText="Please enter valid data"
           />
         </div>
       )
