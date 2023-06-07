@@ -12,6 +12,12 @@ export const mockPendingLabOrder = {
       date: 'May 03, 2022',
       orderedBy: 'Superman',
     },
+    {
+      id: 'abe-123',
+      testName: 'Dummy Test',
+      date: 'May 03, 2022',
+      orderedBy: 'Superman',
+    }
   ],
   goTo: jest.fn(),
   currentPage: 1,

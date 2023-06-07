@@ -24,6 +24,17 @@ export const mockPendingLabOrdersResponse: LabOrdersFetchResponse = {
       providerUuid: '2',
       fulfillerStatus: null,
     },
+    {
+      concept: {
+        name: 'Dummy Test',
+        uuid: '1643AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA',
+      },
+      orderDate: 1657186534000,
+      orderUuid: 'abe-123',
+      provider: 'Super Man',
+      providerUuid: '2',
+      fulfillerStatus: null,
+    }
   ],
 }
 

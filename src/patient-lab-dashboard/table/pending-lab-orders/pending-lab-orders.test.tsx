@@ -98,7 +98,7 @@ describe('Paginated Table', () => {
         name: /select row/i,
       }).length,
     ).toEqual(1)
-    expect(screen.getByText(/2 \/ 2 items/i)).toBeInTheDocument()
+    expect(screen.getByText(/3 \/ 3 items/i)).toBeInTheDocument()
 
     userEvent.click(
       screen.getByRole('checkbox', {

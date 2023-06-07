@@ -31,11 +31,15 @@ import {
   mockDiagnosticReportResponse,
   mockLabTestsResponse,
   mockUploadFileResponse,
+  testResultsdiagnosticNumericReportRequestBody,
   testResultsdiagnosticReportRequestBody,
 } from '../../__mocks__/selectTests.mock'
 import PatientLabDetails from './patient-lab-details'
 import {mockLabConfigResponse} from '../../__mocks__/labConfig'
-import {mockTestResultResponse} from '../../__mocks__/testResults'
+import {
+  mockTestResult,
+  mockTestResultResponse,
+} from '../../__mocks__/testResults'
 
 const mockPatientUuid = '123'
 const matchParams = {
@@ -617,7 +621,7 @@ describe('Patient lab details', () => {
         name: /click to record clinical conclusion/i,
       }),
     )
-    userEvent.type(screen.getByTestId(/conclusion/i),"Normal Report")
+    userEvent.type(screen.getByTestId(/conclusion/i), 'Normal Report')
 
     const saveButton = screen.getByRole('button', {name: /save and upload/i})
 
@@ -764,6 +768,83 @@ describe('Patient lab details', () => {
     expect(
       screen.getByRole('button', {name: /save and upload/i}),
     ).toBeDisabled()
+  })
+  it('should construct request payload based on the lab test datatype', async () => {
+    const mockedOpenmrsFetch = openmrsFetch as jest.Mock
+    mockedOpenmrsFetch
+      .mockReturnValueOnce(mockPendingLabOrdersResponse)
+      .mockReturnValueOnce(mockEmptyReportTableResponse)
+      .mockReturnValueOnce(mockLabTestsResponse)
+      .mockReturnValueOnce(mockLabConfigResponse)
+      .mockReturnValueOnce(mockDoctorNames)
+      .mockReturnValueOnce(mockTestResult)
+      .mockReturnValue(mockDiagnosticReportResponse)
+    render(
+      <SWRConfig value={{provider: () => new Map()}}>
+        <BrowserRouter>
+          <PatientLabDetails
+            match={matchParams}
+            history={undefined}
+            location={undefined}
+          />
+        </BrowserRouter>
+      </SWRConfig>,
+    )
+
+    await waitFor(() => {
+      expect(screen.getByText(/Pending lab orders/i)).toBeInTheDocument()
+    })
+
+    expect(screen.getByRole('cell', {name: 'Dummy Test'})).toBeInTheDocument()
+
+    userEvent.click(screen.getAllByRole('checkbox', {name: /Select row/i})[2])
+
+    userEvent.click(screen.getByRole('button', {name: /enter test results/i}))
+
+    expect(
+      screen.getByRole('button', {name: /save and upload/i}),
+    ).toBeDisabled()
+
+    await waitFor(() =>
+      expect(screen.getByPlaceholderText(/Input Text/i)).toBeInTheDocument(),
+    )
+    userEvent.type(screen.getByPlaceholderText(/Input Text/i), '7')
+
+    userEvent.click(
+      screen.getByRole('textbox', {
+        name: /report date/i,
+      }),
+    )
+
+    userEvent.click(screen.getByLabelText(currentDay))
+    expect(await screen.findByText(/Super Man/i)).toBeInTheDocument()
+
+    userEvent.click(
+      screen.getByRole('button', {
+        name: /click to record clinical conclusion/i,
+      }),
+    )
+    userEvent.type(screen.getByTestId(/conclusion/i), 'Normal Report')
+
+    const saveButton = screen.getByRole('button', {name: /save and upload/i})
+
+    expect(saveButton).not.toBeDisabled()
+    userEvent.click(saveButton)
+
+    await waitFor(() =>
+      expect(
+        screen.getByText(/Report successfully uploaded/i),
+      ).toBeInTheDocument(),
+    )
+    userEvent.click(screen.getByTitle(/closes notification/i))
+
+      verifyApiCall(
+        saveDiagnosticReportURL,
+        'POST',
+        testResultsdiagnosticNumericReportRequestBody(
+          new Date(currentDay).toISOString(),
+        ),
+      )
   })
 })
 
