@@ -177,14 +177,15 @@ interface Contained {
   subject: Subject
   valueQuantity?: ValueQuantity
   valueCodeableConcept?: {
-      coding: [
-        {
-          code: string
-          display: string
-        },
-      ]
+    coding: [
+      {
+        code: string
+        display: string
+      },
+    ]
   }
   valueBoolean?: boolean
+  valueString?: string
 }
 
 export interface TestResultsLabOrder {

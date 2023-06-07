@@ -167,7 +167,10 @@ export function saveTestDiagnosticReport(
   reportConclusion: string,
   ac: AbortController,
   selectedPendingOrder: PendingLabOrders,
-  labResult: Map<string, {value: string; abnormal?: boolean; codableConceptUuid? : string}>,
+  labResult: Map<
+    string,
+    {value: string; abnormal?: boolean; codableConceptUuid?: string}
+  >,
   dataType: Datatype,
 ) {
   let basedOn: Array<BasedOnType> = null
@@ -231,11 +234,16 @@ export function saveTestDiagnosticReport(
     requestBody.contained[0].valueCodeableConcept = {
       coding: [
         {
-          code: labResult.get(selectedPendingOrder.conceptUuid)?.codableConceptUuid,
+          code: labResult.get(selectedPendingOrder.conceptUuid)
+            ?.codableConceptUuid,
           display: labResult.get(selectedPendingOrder.conceptUuid)?.value,
         },
       ],
     }
+  } else {
+    requestBody.contained[0].valueString = labResult.get(
+      selectedPendingOrder.conceptUuid,
+    )?.value
   }
 
   if (reportConclusion) {
