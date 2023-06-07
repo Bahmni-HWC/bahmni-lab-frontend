@@ -12,7 +12,6 @@ import Overlay from '../../common/overlay'
 import {usePendingLabOrderContext} from '../../context/pending-orders-context'
 import {
   useDoctorDetails,
-  useSelectedTests,
 } from '../../context/upload-report-context'
 import styles from './test-results.scss'
 import {fetcher, getTestResults, swrOptions} from '../../utils/api-utils'
@@ -39,9 +38,8 @@ const TestResults: React.FC<TestResultProps> = ({
   const [reportDate, setReportDate] = useState<Date>(null)
   const [reportConclusion, setReportConclusion] = useState<string>('')
   const {doctor, setDoctor} = useDoctorDetails()
-  const {setSelectedTests} = useSelectedTests()
   const maxCount: number = 500
-  const {selectedPendingOrder} = usePendingLabOrderContext()
+  const {selectedPendingOrder,setSelectedPendingOrder} = usePendingLabOrderContext()
   const [showReportConclusionLabel, setShowReportConclusionLabel] = useState<
     boolean
   >(true)
@@ -52,7 +50,6 @@ const TestResults: React.FC<TestResultProps> = ({
   const handleDiscard = () => {
     setReportDate(null)
     setReportConclusion('')
-    setSelectedTests([])
     setDoctor(null)
     setShowReportConclusionLabel(true)
     setLabResult(new Map())
@@ -68,7 +65,7 @@ const TestResults: React.FC<TestResultProps> = ({
   })
 
   const isDisabled = () =>
-    !reportDate || !doctor || !isValidDataPreset() || isSaveButtonClicked
+    !reportDate || !doctor || !isValidDataPresent() || isSaveButtonClicked
 
   const getTestData = test => {
     for (let index = 0; index < testResultData.length; index++) {
@@ -102,7 +99,7 @@ const TestResults: React.FC<TestResultProps> = ({
     return false
   }
 
-  const isValidDataPreset = () => {
+  const isValidDataPresent = () => {
     if (labResult.size == 0 || labResult.size !== selectedPendingOrder.length)
       return false
 
@@ -111,11 +108,12 @@ const TestResults: React.FC<TestResultProps> = ({
     }
 
     for (let index = 0; index < testResultData.length; index++) {
-      for (let mapEntry of labResult.keys())
+      for (let mapEntry of labResult.keys()){
         if (testResultData[index].data.uuid === mapEntry) {
           if (isInvalid(testResultData[index].data)) {
             return false
           }
+        }
         }
     }
 
@@ -140,34 +138,34 @@ const TestResults: React.FC<TestResultProps> = ({
   )
   const saveTestResults = async () => {
     const ac = new AbortController()
-    let allSuccess: boolean = true
-    try {
-      for (let index = 0; index < selectedPendingOrder.length; index++) {
-        const response = await saveTestDiagnosticReport(
-          undefined,
-          patientUuid,
-          doctor.uuid,
-          reportDate,
-          reportConclusion,
-          ac,
-          selectedPendingOrder[index],
-          labResult,
-          getTestData(selectedPendingOrder[index]).datatype,
-        )
-        if (allSuccess && !response.ok) {
-          allSuccess = false
-          break
+      let allSuccess: boolean = true
+      try {
+        for (let index = 0; index < selectedPendingOrder.length; index++) {
+          const response = await saveTestDiagnosticReport(
+            undefined,
+            patientUuid,
+            doctor.uuid,
+            reportDate,
+            reportConclusion,
+            ac,
+            selectedPendingOrder[index],
+            labResult,
+            getTestData(selectedPendingOrder[index]).datatype,
+          )
+          if (allSuccess && !response.ok) {
+            allSuccess = false
+            break
+          }
         }
+      } catch (e) {
+        allSuccess = false
       }
-    } catch (e) {
-      allSuccess = false
-    }
-    if (allSuccess) {
-      // setLabResult(new Map())
-      saveHandler(true)
-    } else {
-      saveHandler(false)
-    }
+      if (allSuccess) {
+        saveHandler(true)
+        setSelectedPendingOrder([])
+      } else {
+        saveHandler(false)
+      }
   }
 
   const getTestNameWithUnits = test => {

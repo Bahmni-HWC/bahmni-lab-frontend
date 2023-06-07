@@ -6,6 +6,7 @@ import {SWRConfig} from 'swr'
 import {
   mockPanelTestResult,
   mockSelectedPendingOrder,
+  mockTestResult,
 } from '../../__mocks__/testResults'
 import {LabTestResultsProvider} from '../../context/lab-test-results-context'
 import {PendingLabOrdersProvider} from '../../context/pending-orders-context'
@@ -234,7 +235,7 @@ describe('TestResults Report', () => {
     const mockedLayout = useLayoutType as jest.Mock
     mockedLayout.mockReturnValue('desktop')
     const mockedOpenmrsFetch = openmrsFetch as jest.Mock
-    mockedOpenmrsFetch.mockReturnValue(mockPanelTestResult)
+    mockedOpenmrsFetch.mockReturnValue(mockTestResult)
 
     renderWithContextProvider(
       <TestResults
@@ -254,11 +255,9 @@ describe('TestResults Report', () => {
       screen.getByRole('button', {name: /save and upload/i}),
     ).toBeDisabled()
 
-    userEvent.type(screen.getAllByPlaceholderText(/Input Text/i)[0], 'numeric')
-    userEvent.type(screen.getAllByPlaceholderText(/Input Text/i)[1], '22')
-    userEvent.type(screen.getAllByPlaceholderText(/Input Text/i)[2], 'positive')
+    userEvent.type(screen.getByPlaceholderText(/Input Text/i), 'test value')
 
-    expect(screen.getAllByPlaceholderText(/Input Text/i)[0]).toBeInvalid()
+    expect(screen.getByPlaceholderText(/Input Text/i)).toBeInvalid()
 
     userEvent.click(
       screen.getByRole('textbox', {
@@ -297,10 +296,13 @@ function getFormatedDate(addDays: number): string {
 }
 function renderWithContextProvider(children) {
   return render(
-    <LabTestResultsProvider>
-      <PendingLabOrdersProvider>
-        <UploadReportProvider>{children}</UploadReportProvider>
-      </PendingLabOrdersProvider>
-    </LabTestResultsProvider>,
+    <SWRConfig value={{provider: () => new Map()}}>
+      <LabTestResultsProvider>
+        <PendingLabOrdersProvider>
+          <UploadReportProvider>{children}</UploadReportProvider>
+        </PendingLabOrdersProvider>
+      </LabTestResultsProvider>
+      ,
+    </SWRConfig>,
   )
 }
