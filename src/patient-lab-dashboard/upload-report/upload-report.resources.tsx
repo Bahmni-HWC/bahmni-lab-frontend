@@ -225,7 +225,8 @@ export function saveTestDiagnosticReport(
   }
   if (dataType.name == 'Boolean') {
     requestBody.contained[0].valueBoolean =
-      labResult.get(selectedPendingOrder.conceptUuid)?.value == 'true'
+      labResult.get(selectedPendingOrder.conceptUuid)?.value.toLowerCase() ==
+      'true'
   } else if (dataType.name == 'Numeric') {
     requestBody.contained[0].valueQuantity = {
       value: labResult.get(selectedPendingOrder.conceptUuid)?.value,

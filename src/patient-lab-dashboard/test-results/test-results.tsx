@@ -37,6 +37,7 @@ const TestResults: React.FC<TestResultProps> = ({
   const [reportDate, setReportDate] = useState<Date>(null)
   const [reportConclusion, setReportConclusion] = useState<string>('')
   const {doctor, setDoctor} = useDoctorDetails()
+  const [answers, setAnwers] = useState(null)
   const maxCount: number = 500
   const {
     selectedPendingOrder,
@@ -55,6 +56,7 @@ const TestResults: React.FC<TestResultProps> = ({
     setDoctor(null)
     setShowReportConclusionLabel(true)
     setLabResult(new Map())
+    setAnwers(null)
   }
 
   selectedPendingOrder.forEach(selectedPendingOrder => {
@@ -80,21 +82,7 @@ const TestResults: React.FC<TestResultProps> = ({
   const isInvalid = test => {
     if (labResult.get(test.uuid)?.value !== '') {
       const datatype = test?.datatype.name
-      if (
-        datatype === 'Coded' &&
-        labResult.get(test.uuid)?.codableConceptUuid === undefined
-      ) {
-        return true
-      } else if (
-        datatype === 'Numeric' &&
-        isNaN(labResult.get(test.uuid)?.value)
-      ) {
-        return true
-      } else if (
-        datatype === 'Boolean' &&
-        labResult.get(test.uuid)?.value.toLowerCase() !== 'true' &&
-        labResult.get(test.uuid)?.value.toLowerCase() !== 'false'
-      ) {
+      if (datatype === 'Numeric' && isNaN(labResult.get(test.uuid)?.value)) {
         return true
       }
     }
@@ -188,7 +176,6 @@ const TestResults: React.FC<TestResultProps> = ({
     )
   }
 
-
   const updateOrStoreLabResult = (value, test) => {
     if (value !== null || value !== undefined) {
       if (isAbnormal(value, test)) {
@@ -216,6 +203,7 @@ const TestResults: React.FC<TestResultProps> = ({
   const getValue = test => labResult.get(test.uuid)?.value ?? ''
 
   const updateLabResult = (selectedItem, test) => {
+    setAnwers(selectedItem)
     if (selectedItem.uuid)
       setLabResult(
         map =>
@@ -239,11 +227,11 @@ const TestResults: React.FC<TestResultProps> = ({
 
   const renderInputField = (test, index) => {
     if (test) {
-      const datatype = test.datatype.name
       const items = []
+      const datatype = test.datatype.name
       if (datatype === 'Boolean' || datatype === 'Coded') {
         if (datatype === 'Boolean')
-          items.push({name: {name: 'Positive'}}, {name: {name: 'Negative'}})
+          items.push({name: {name: 'True'}}, {name: {name: 'False'}})
         else if (datatype === 'Coded') {
           const answers = test.answers
           for (let answer of answers) {
@@ -260,7 +248,7 @@ const TestResults: React.FC<TestResultProps> = ({
               itemToString={data => data.name.name}
               label="Select an answer"
               onChange={({selectedItem}) => updateLabResult(selectedItem, test)}
-              selectedItem={labResult.get(test.uuid)?.value.value}
+              selectedItem={answers}
             />
           </div>
         )
@@ -271,7 +259,7 @@ const TestResults: React.FC<TestResultProps> = ({
               key={`text-${test.uuid}-${index}`}
               labelText={getTestNameWithUnits(test)}
               id={`${test.uuid}-${index}`}
-              placeholder="Input Text"
+              placeholder="Enter Value"
               size="sm"
               onChange={e => updateOrStoreLabResult(e.target.value, test)}
               style={labResult.get(test.uuid)?.abnormal ? {color: 'red'} : {}}
