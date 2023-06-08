@@ -2,6 +2,7 @@ import {
   Button,
   DatePicker,
   DatePickerInput,
+  Dropdown,
   TextArea,
   TextInput,
 } from 'carbon-components-react'
@@ -187,20 +188,9 @@ const TestResults: React.FC<TestResultProps> = ({
     )
   }
 
-  const getConceptUuidForAnswer = (test, value) => {
-    const dataType = test?.datatype.name
-
-    if (dataType === 'Coded') {
-      const answers = test?.answers
-      for (let index = 0; index < answers.length; index++) {
-        if (answers[index].name.name.toLowerCase() === value.toLowerCase())
-          return answers[index].uuid
-      }
-    }
-  }
 
   const updateOrStoreLabResult = (value, test) => {
-    if (value !== null || value !== undefined || !isNaN(value)) {
+    if (value !== null || value !== undefined) {
       if (isAbnormal(value, test)) {
         setLabResult(
           map =>
@@ -208,16 +198,6 @@ const TestResults: React.FC<TestResultProps> = ({
               map.set(test.uuid, {
                 value: value,
                 abnormal: true,
-              }),
-            ),
-        )
-      } else if (test?.datatype.name === 'Coded') {
-        setLabResult(
-          map =>
-            new Map(
-              map.set(test.uuid, {
-                value: value,
-                codableConceptUuid: getConceptUuidForAnswer(test, value),
               }),
             ),
         )
@@ -235,24 +215,72 @@ const TestResults: React.FC<TestResultProps> = ({
 
   const getValue = test => labResult.get(test.uuid)?.value ?? ''
 
+  const updateLabResult = (selectedItem, test) => {
+    if (selectedItem.uuid)
+      setLabResult(
+        map =>
+          new Map(
+            map.set(test.uuid, {
+              value: selectedItem.name.name,
+              codableConceptUuid: selectedItem.uuid,
+            }),
+          ),
+      )
+    else
+      setLabResult(
+        map =>
+          new Map(
+            map.set(test.uuid, {
+              value: selectedItem.name.name,
+            }),
+          ),
+      )
+  }
+
   const renderInputField = (test, index) => {
     if (test) {
-      return (
-        <div className={styles.testresultinputfield}>
-          <TextInput
-            key={`text-${test.uuid}-${index}`}
-            labelText={getTestNameWithUnits(test)}
-            id={`${test.uuid}-${index}`}
-            placeholder="Input Text"
-            size="sm"
-            onChange={e => updateOrStoreLabResult(e.target.value, test)}
-            style={labResult.get(test.uuid)?.abnormal ? {color: 'red'} : {}}
-            value={getValue(test)}
-            invalid={labResult.size != 0 && isInvalid(test)}
-            invalidText="Please enter valid data"
-          />
-        </div>
-      )
+      const datatype = test.datatype.name
+      const items = []
+      if (datatype === 'Boolean' || datatype === 'Coded') {
+        if (datatype === 'Boolean')
+          items.push({name: {name: 'Positive'}}, {name: {name: 'Negative'}})
+        else if (datatype === 'Coded') {
+          const answers = test.answers
+          for (let answer of answers) {
+            items.push(answer)
+          }
+        }
+        return (
+          <div className={styles.testresultinputfield}>
+            <Dropdown
+              titleText={getTestNameWithUnits(test)}
+              id="answers-list-dropdown"
+              title="answers list"
+              items={items}
+              itemToString={data => data.name.name}
+              label="Select an answer"
+              onChange={({selectedItem}) => updateLabResult(selectedItem, test)}
+              selectedItem={labResult.get(test.uuid)?.value.value}
+            />
+          </div>
+        )
+      } else
+        return (
+          <div className={styles.testresultinputfield}>
+            <TextInput
+              key={`text-${test.uuid}-${index}`}
+              labelText={getTestNameWithUnits(test)}
+              id={`${test.uuid}-${index}`}
+              placeholder="Input Text"
+              size="sm"
+              onChange={e => updateOrStoreLabResult(e.target.value, test)}
+              style={labResult.get(test.uuid)?.abnormal ? {color: 'red'} : {}}
+              value={getValue(test)}
+              invalid={labResult.size != 0 && isInvalid(test)}
+              invalidText="Please enter valid data"
+            />
+          </div>
+        )
     }
   }
   const renderTestResultWidget = () => {
