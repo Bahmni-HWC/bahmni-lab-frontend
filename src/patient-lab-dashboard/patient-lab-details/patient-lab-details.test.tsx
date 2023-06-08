@@ -602,9 +602,16 @@ describe('Patient lab details', () => {
     ).toBeDisabled()
 
     await waitFor(() =>
-      expect(screen.getByPlaceholderText(/Input Text/i)).toBeInTheDocument(),
+      expect(screen.getByText(/select an answer/i)).toBeInTheDocument(),
     )
-    userEvent.type(screen.getByPlaceholderText(/Input Text/i), 'false')
+
+    userEvent.click(
+      screen.getByRole('button', {
+        name: /hiv test/i,
+      }),
+    )
+    expect(screen.getByText('False')).toBeInTheDocument()
+    userEvent.click(await screen.findByText('False'))
 
     userEvent.click(
       screen.getByRole('textbox', {
@@ -681,9 +688,16 @@ describe('Patient lab details', () => {
     ).toBeDisabled()
 
     await waitFor(() =>
-      expect(screen.getByPlaceholderText(/Input Text/i)).toBeInTheDocument(),
+      expect(screen.getByText(/select an answer/i)).toBeInTheDocument(),
     )
-    userEvent.type(screen.getByPlaceholderText(/Input Text/i), 'true')
+
+    userEvent.click(
+      screen.getByRole('button', {
+        name: /hiv test/i,
+      }),
+    )
+    expect(screen.getByText('True')).toBeInTheDocument()
+    userEvent.click(await screen.findByText('True'))
 
     expect(await screen.findByText(/Super Man/i)).toBeInTheDocument()
 
@@ -747,7 +761,7 @@ describe('Patient lab details', () => {
     ).toBeDisabled()
 
     await waitFor(() =>
-      expect(screen.getByPlaceholderText(/Input Text/i)).toBeInTheDocument(),
+      expect(screen.getByText(/select an answer/i)).toBeInTheDocument(),
     )
 
     expect(await screen.findByText(/Super Man/i)).toBeInTheDocument()
@@ -805,9 +819,9 @@ describe('Patient lab details', () => {
     ).toBeDisabled()
 
     await waitFor(() =>
-      expect(screen.getByPlaceholderText(/Input Text/i)).toBeInTheDocument(),
+      expect(screen.getByPlaceholderText(/Enter value/i)).toBeInTheDocument(),
     )
-    userEvent.type(screen.getByPlaceholderText(/Input Text/i), '7')
+    userEvent.type(screen.getByPlaceholderText(/Enter value/i), '7')
 
     userEvent.click(
       screen.getByRole('textbox', {
@@ -837,13 +851,13 @@ describe('Patient lab details', () => {
     )
     userEvent.click(screen.getByTitle(/closes notification/i))
 
-      verifyApiCall(
-        saveDiagnosticReportURL,
-        'POST',
-        testResultsdiagnosticNumericReportRequestBody(
-          new Date(currentDay).toISOString(),
-        ),
-      )
+    verifyApiCall(
+      saveDiagnosticReportURL,
+      'POST',
+      testResultsdiagnosticNumericReportRequestBody(
+        new Date(currentDay).toISOString(),
+      ),
+    )
   })
 })
 

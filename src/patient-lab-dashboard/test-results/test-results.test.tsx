@@ -154,7 +154,7 @@ describe('TestResults Report', () => {
     )
     await waitFor(() =>
       expect(
-        screen.getAllByPlaceholderText(/Input Text/i)[0],
+        screen.getAllByPlaceholderText(/Enter value/i)[0],
       ).toBeInTheDocument(),
     )
 
@@ -162,9 +162,9 @@ describe('TestResults Report', () => {
       screen.getByRole('button', {name: /save and upload/i}),
     ).toBeDisabled()
 
-    userEvent.type(screen.getAllByPlaceholderText(/Input Text/i)[0], '6')
+    userEvent.type(screen.getAllByPlaceholderText(/Enter value/i)[0], '6')
 
-    expect(screen.getAllByPlaceholderText(/Input Text/i)[0]).toHaveStyle({
+    expect(screen.getAllByPlaceholderText(/Enter value/i)[0]).toHaveStyle({
       color: 'red',
     })
   })
@@ -185,10 +185,11 @@ describe('TestResults Report', () => {
     )
     await waitFor(() =>
       expect(
-        screen.getAllByPlaceholderText(/Input Text/i)[0],
+        screen.getAllByPlaceholderText(/Enter value/i)[0],
       ).toBeInTheDocument(),
     )
-    expect(screen.getAllByPlaceholderText(/Input Text/i).length).toBe(3)
+    expect(screen.getAllByPlaceholderText(/Enter value/i).length).toBe(2)
+    expect(screen.getByText(/select an answer/i)).toBeInTheDocument()
   })
   it('should indicate error message when user enters invalid data', async () => {
     localStorage.setItem('i18nextLng', 'en')
@@ -207,7 +208,7 @@ describe('TestResults Report', () => {
     )
     await waitFor(() =>
       expect(
-        screen.getAllByPlaceholderText(/Input Text/i)[0],
+        screen.getAllByPlaceholderText(/Enter value/i)[0],
       ).toBeInTheDocument(),
     )
 
@@ -215,17 +216,26 @@ describe('TestResults Report', () => {
       screen.getByRole('button', {name: /save and upload/i}),
     ).toBeDisabled()
 
-    userEvent.type(screen.getAllByPlaceholderText(/Input Text/i)[0], '10')
-    userEvent.type(screen.getAllByPlaceholderText(/Input Text/i)[1], '22')
-    userEvent.type(screen.getAllByPlaceholderText(/Input Text/i)[2], 'pos')
+    userEvent.type(screen.getAllByPlaceholderText(/Enter value/i)[0], 'numeric')
+    userEvent.type(screen.getAllByPlaceholderText(/Enter value/i)[1], '22')
+    expect(screen.getByText(/select an answer/i)).toBeInTheDocument()
+    
+    
+    userEvent.click(
+      screen.getByRole('button', {
+        name: /rdt malaria/i,
+      }),
+      )
+      expect(screen.getByText(/positive/i)).toBeInTheDocument()
+      userEvent.click(await screen.findByText('Positive'))
 
-    expect(screen.getAllByPlaceholderText(/Input Text/i)[2]).toBeInvalid()
+    expect(screen.getAllByPlaceholderText(/Enter value/i)[0]).toBeInvalid()
     expect(screen.getByText(/please enter valid data/i)).toBeInTheDocument()
 
-    userEvent.clear(screen.getAllByPlaceholderText(/Input Text/i)[2])
-    userEvent.type(screen.getAllByPlaceholderText(/Input Text/i)[2], 'positive')
+    userEvent.clear(screen.getAllByPlaceholderText(/Enter value/i)[0])
+    userEvent.type(screen.getAllByPlaceholderText(/Enter value/i)[0], '8')
 
-    expect(screen.getAllByPlaceholderText(/Input Text/i)[2]).not.toBeInvalid()
+    expect(screen.getAllByPlaceholderText(/Enter value/i)[0]).not.toBeInvalid()
     expect(
       screen.queryByText(/please enter valid data/i),
     ).not.toBeInTheDocument()
@@ -247,7 +257,7 @@ describe('TestResults Report', () => {
     )
     await waitFor(() =>
       expect(
-        screen.getAllByPlaceholderText(/Input Text/i)[0],
+        screen.getAllByPlaceholderText(/Enter value/i)[0],
       ).toBeInTheDocument(),
     )
 
@@ -255,9 +265,9 @@ describe('TestResults Report', () => {
       screen.getByRole('button', {name: /save and upload/i}),
     ).toBeDisabled()
 
-    userEvent.type(screen.getByPlaceholderText(/Input Text/i), 'test value')
+    userEvent.type(screen.getByPlaceholderText(/Enter value/i), 'test value')
 
-    expect(screen.getByPlaceholderText(/Input Text/i)).toBeInvalid()
+    expect(screen.getByPlaceholderText(/Enter value/i)).toBeInvalid()
 
     userEvent.click(
       screen.getByRole('textbox', {
