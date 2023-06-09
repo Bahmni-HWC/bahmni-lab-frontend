@@ -37,7 +37,7 @@ const TestResults: React.FC<TestResultProps> = ({
   const [reportDate, setReportDate] = useState<Date>(null)
   const [reportConclusion, setReportConclusion] = useState<string>('')
   const {doctor, setDoctor} = useDoctorDetails()
-  const [answers, setAnwers] = useState(null)
+  const [answer, setAnswer] = useState(null)
   const maxCount: number = 500
   const {
     selectedPendingOrder,
@@ -56,7 +56,7 @@ const TestResults: React.FC<TestResultProps> = ({
     setDoctor(null)
     setShowReportConclusionLabel(true)
     setLabResult(new Map())
-    setAnwers(null)
+    setAnswer(null)
   }
 
   selectedPendingOrder.forEach(selectedPendingOrder => {
@@ -203,7 +203,7 @@ const TestResults: React.FC<TestResultProps> = ({
   const getValue = test => labResult.get(test.uuid)?.value ?? ''
 
   const updateLabResult = (selectedItem, test) => {
-    setAnwers(selectedItem)
+    setAnswer(selectedItem)
     if (selectedItem.uuid)
       setLabResult(
         map =>
@@ -248,7 +248,10 @@ const TestResults: React.FC<TestResultProps> = ({
               itemToString={data => data.name.name}
               label="Select an answer"
               onChange={({selectedItem}) => updateLabResult(selectedItem, test)}
-              selectedItem={answers}
+              selectedItem={answer}
+              helperText={
+                answer && answer.name.name.length > 35 ? answer.name.name : ''
+              }
             />
           </div>
         )
