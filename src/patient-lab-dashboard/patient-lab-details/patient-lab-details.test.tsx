@@ -31,6 +31,7 @@ import {
   mockDiagnosticReportResponse,
   mockLabTestsResponse,
   mockUploadFileResponse,
+  testResultsdiagnosticInterpretationReportRequestBody,
   testResultsdiagnosticNumericReportRequestBody,
   testResultsdiagnosticReportRequestBody,
 } from '../../__mocks__/selectTests.mock'
@@ -855,6 +856,91 @@ describe('Patient lab details', () => {
       saveDiagnosticReportURL,
       'POST',
       testResultsdiagnosticNumericReportRequestBody(
+        new Date(currentDay).toISOString(),
+      ),
+    )
+  })
+  it('should have interpretation in request payload based for abnormal lab result', async () => {
+    const mockedOpenmrsFetch = openmrsFetch as jest.Mock
+    mockedOpenmrsFetch
+      .mockReturnValueOnce(mockPendingLabOrdersResponse)
+      .mockReturnValueOnce(mockEmptyReportTableResponse)
+      .mockReturnValueOnce(mockLabTestsResponse)
+      .mockReturnValueOnce(mockLabConfigResponse)
+      .mockReturnValueOnce(mockDoctorNames)
+      .mockReturnValueOnce(mockTestResult)
+      .mockReturnValue(mockDiagnosticReportResponse)
+    render(
+      <SWRConfig value={{provider: () => new Map()}}>
+        <BrowserRouter>
+          <PatientLabDetails
+            match={matchParams}
+            history={undefined}
+            location={undefined}
+          />
+        </BrowserRouter>
+      </SWRConfig>,
+    )
+
+    await waitFor(() => {
+      expect(screen.getByText(/Pending lab orders/i)).toBeInTheDocument()
+    })
+
+    expect(screen.getByRole('cell', {name: 'Dummy Test'})).toBeInTheDocument()
+
+    userEvent.click(screen.getAllByRole('checkbox', {name: /Select row/i})[2])
+
+    userEvent.click(screen.getByRole('button', {name: /enter test results/i}))
+
+    expect(
+      screen.getByRole('button', {name: /save and upload/i}),
+    ).toBeDisabled()
+
+    await waitFor(() =>
+      expect(screen.getByPlaceholderText(/Enter value/i)).toBeInTheDocument(),
+    )
+    userEvent.type(screen.getByPlaceholderText(/Enter value/i), '7')
+
+    userEvent.click(screen.getAllByLabelText(/abnormal/i)[0])
+
+    expect(screen.getAllByLabelText(/abnormal/i)[0]).toBeChecked()
+
+    expect(screen.getAllByPlaceholderText(/Enter value/i)[0]).toHaveStyle({
+      color: 'red',
+    })
+
+    userEvent.click(
+      screen.getByRole('textbox', {
+        name: /report date/i,
+      }),
+    )
+
+    userEvent.click(screen.getByLabelText(currentDay))
+    expect(await screen.findByText(/Super Man/i)).toBeInTheDocument()
+
+    userEvent.click(
+      screen.getByRole('button', {
+        name: /click to record clinical conclusion/i,
+      }),
+    )
+    userEvent.type(screen.getByTestId(/conclusion/i), 'Normal Report')
+
+    const saveButton = screen.getByRole('button', {name: /save and upload/i})
+
+    expect(saveButton).not.toBeDisabled()
+    userEvent.click(saveButton)
+
+    await waitFor(() =>
+      expect(
+        screen.getByText(/Report successfully uploaded/i),
+      ).toBeInTheDocument(),
+    )
+    userEvent.click(screen.getByTitle(/closes notification/i))
+
+    verifyApiCall(
+      saveDiagnosticReportURL,
+      'POST',
+      testResultsdiagnosticInterpretationReportRequestBody(
         new Date(currentDay).toISOString(),
       ),
     )

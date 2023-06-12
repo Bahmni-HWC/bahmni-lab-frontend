@@ -168,6 +168,49 @@ describe('TestResults Report', () => {
       color: 'red',
     })
   })
+  it('should indicate when the entered value is abnormal based on Checkbox', async () => {
+    localStorage.setItem('i18nextLng', 'en')
+    const mockedLayout = useLayoutType as jest.Mock
+    mockedLayout.mockReturnValue('desktop')
+    const mockedOpenmrsFetch = openmrsFetch as jest.Mock
+    mockedOpenmrsFetch.mockReturnValue(mockPanelTestResult)
+
+    renderWithContextProvider(
+      <TestResults
+        closeHandler={closeHandler}
+        saveHandler={saveHandler}
+        header={'Test Header'}
+        patientUuid={'123'}
+      />,
+    )
+    await waitFor(() =>
+      expect(
+        screen.getAllByPlaceholderText(/Enter value/i)[0],
+      ).toBeInTheDocument(),
+    )
+
+    expect(
+      screen.getByRole('button', {name: /save and upload/i}),
+    ).toBeDisabled()
+
+    expect(screen.getAllByRole('checkbox', {name: /Abnormal/i}).length).toBe(2)
+
+    userEvent.type(screen.getAllByPlaceholderText(/Enter value/i)[0], '6')
+
+    expect(screen.getAllByPlaceholderText(/Enter value/i)[0]).toHaveStyle({
+      color: 'red',
+    })
+
+    expect(screen.getAllByLabelText(/abnormal/i)[0]).toBeChecked()
+
+    userEvent.click(screen.getAllByLabelText(/abnormal/i)[0])
+
+    expect(screen.getAllByLabelText(/abnormal/i)[0]).not.toBeChecked()
+
+    expect(screen.getAllByPlaceholderText(/Enter value/i)[0]).not.toHaveStyle({
+      color: 'red',
+    })
+  })
   it('should display text input for each tests for a panel', async () => {
     localStorage.setItem('i18nextLng', 'en')
     const mockedLayout = useLayoutType as jest.Mock
@@ -219,15 +262,14 @@ describe('TestResults Report', () => {
     userEvent.type(screen.getAllByPlaceholderText(/Enter value/i)[0], 'numeric')
     userEvent.type(screen.getAllByPlaceholderText(/Enter value/i)[1], '22')
     expect(screen.getByText(/select an answer/i)).toBeInTheDocument()
-    
-    
+
     userEvent.click(
       screen.getByRole('button', {
         name: /rdt malaria/i,
       }),
-      )
-      expect(screen.getByText(/positive/i)).toBeInTheDocument()
-      userEvent.click(await screen.findByText('Positive'))
+    )
+    expect(screen.getByText(/positive/i)).toBeInTheDocument()
+    userEvent.click(await screen.findByText('Positive'))
 
     expect(screen.getAllByPlaceholderText(/Enter value/i)[0]).toBeInvalid()
     expect(screen.getByText(/please enter valid data/i)).toBeInTheDocument()
