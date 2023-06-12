@@ -223,7 +223,7 @@ export function saveTestDiagnosticReport(
       },
     ],
   }
-  if (labResult.get(selectedPendingOrder.conceptUuid).abnormal) {
+  if (labResult.get(selectedPendingOrder.conceptUuid).abnormal === true) {
     requestBody.contained[0].interpretation = [
       {
         coding: [

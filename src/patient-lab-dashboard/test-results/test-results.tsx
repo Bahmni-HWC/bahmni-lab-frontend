@@ -1,5 +1,6 @@
 import {
   Button,
+  Checkbox,
   DatePicker,
   DatePickerInput,
   Dropdown,
@@ -178,25 +179,15 @@ const TestResults: React.FC<TestResultProps> = ({
 
   const updateOrStoreLabResult = (value, test) => {
     if (value !== null || value !== undefined) {
-      if (isAbnormal(value, test)) {
-        setLabResult(
-          map =>
-            new Map(
-              map.set(test.uuid, {
-                value: value,
-                abnormal: true,
-              }),
-            ),
-        )
-      } else
-        setLabResult(
-          map =>
-            new Map(
-              map.set(test.uuid, {
-                value: value,
-              }),
-            ),
-        )
+      setLabResult(
+        map =>
+          new Map(
+            map.set(test.uuid, {
+              value: value,
+              abnormal: isAbnormal(value, test),
+            }),
+          ),
+      )
     }
   }
 
@@ -257,19 +248,43 @@ const TestResults: React.FC<TestResultProps> = ({
         )
       } else
         return (
-          <div className={styles.testresultinputfield}>
-            <TextInput
-              key={`text-${test.uuid}-${index}`}
-              labelText={getTestNameWithUnits(test)}
-              id={`${test.uuid}-${index}`}
-              placeholder="Enter Value"
-              size="sm"
-              onChange={e => updateOrStoreLabResult(e.target.value, test)}
-              style={labResult.get(test.uuid)?.abnormal ? {color: 'red'} : {}}
-              value={getValue(test)}
-              invalid={labResult.size != 0 && isInvalid(test)}
-              invalidText="Please enter valid data"
-            />
+          <div id='input-checkbox-div'>
+            <span className={styles.testresultinputfield}>
+              <TextInput
+                key={`text-${test.uuid}-${index}`}
+                labelText={getTestNameWithUnits(test)}
+                id={`${test.uuid}-${index}`}
+                placeholder="Enter Value"
+                size="sm"
+                onChange={e => updateOrStoreLabResult(e.target.value, test)}
+                style={labResult.get(test.uuid)?.abnormal ? {color: 'red'} : {}}
+                value={getValue(test)}
+                invalid={labResult.size != 0 && isInvalid(test)}
+                invalidText="Please enter valid data"
+              />
+               </span>
+            
+             <span id='abnormal'> 
+              <Checkbox
+                id={`abnormal-${test.uuid}`}
+                labelText={'Abnormal'}
+                checked={
+                  getValue(test) !== '' &&
+                  (labResult.get(test.uuid)?.abnormal ?? false)
+                }
+                onChange={() =>
+                  setLabResult(
+                    map =>
+                      new Map(
+                        map.set(test.uuid, {
+                          value: labResult.get(test.uuid)?.value,
+                          abnormal: !labResult.get(test.uuid)?.abnormal,
+                        }),
+                      ),
+                  )
+                }
+              />
+           </span>
           </div>
         )
     }
