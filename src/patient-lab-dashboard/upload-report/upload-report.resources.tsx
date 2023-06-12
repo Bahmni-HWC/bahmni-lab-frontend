@@ -223,6 +223,17 @@ export function saveTestDiagnosticReport(
       },
     ],
   }
+  if (labResult.get(selectedPendingOrder.conceptUuid).abnormal) {
+    requestBody.contained[0].interpretation = [
+      {
+        coding: [
+          {
+            code: 'A',
+          },
+        ],
+      },
+    ]
+  }
   if (dataType.name == 'Boolean') {
     requestBody.contained[0].valueBoolean =
       labResult.get(selectedPendingOrder.conceptUuid)?.value.toLowerCase() ==

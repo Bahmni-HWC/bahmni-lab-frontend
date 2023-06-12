@@ -186,6 +186,13 @@ interface Contained {
   }
   valueBoolean?: boolean
   valueString?: string
+  interpretation?: Array<{
+    coding: [
+      {
+        code: string
+      },
+    ]
+  }>
 }
 
 export interface TestResultsLabOrder {
