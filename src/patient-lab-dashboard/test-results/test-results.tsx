@@ -248,23 +248,22 @@ const TestResults: React.FC<TestResultProps> = ({
         )
       } else
         return (
-          <div id="input-checkbox-div">
-            <span className={styles.testresultinputfield}>
-              <TextInput
-                key={`text-${test.uuid}-${index}`}
-                labelText={getTestNameWithUnits(test)}
-                id={`${test.uuid}-${index}`}
-                placeholder="Enter Value"
-                size="sm"
-                onChange={e => updateOrStoreLabResult(e.target.value, test)}
-                style={labResult.get(test.uuid)?.abnormal ? {color: 'red'} : {}}
-                value={getValue(test)}
-                invalid={labResult.size != 0 && isInvalid(test)}
-                invalidText="Please enter valid data"
-              />
-            </span>
-
+          <div className={styles.inputFieldWithCheckbox}>
+            <TextInput
+              key={`text-${test.uuid}-${index}`}
+              labelText={getTestNameWithUnits(test)}
+              id={`${test.uuid}-${index}`}
+              placeholder="Enter Value"
+              size="sm"
+              onChange={e => updateOrStoreLabResult(e.target.value, test)}
+              style={labResult.get(test.uuid)?.abnormal ? {color: 'red'} : {}}
+              value={getValue(test)}
+              invalid={labResult.size != 0 && isInvalid(test)}
+              invalidText="Please enter valid data"
+            />
+            <span style={{paddingLeft:'1rem'}}>
             <Checkbox
+              key={`abnormal-${test.uuid}`}
               id={`abnormal-${test.uuid}`}
               labelText={'Abnormal'}
               checked={
@@ -283,6 +282,7 @@ const TestResults: React.FC<TestResultProps> = ({
                 )
               }
             />
+            </span>
           </div>
         )
     }

@@ -201,7 +201,7 @@ export function saveTestDiagnosticReport(
     contained: [
       {
         resourceType: 'Observation',
-        id: 'example-result-1',
+        id: 'lab-test-result',
         status: 'final',
         code: {
           coding: [
@@ -218,7 +218,7 @@ export function saveTestDiagnosticReport(
     ],
     result: [
       {
-        reference: '#example-result-1',
+        reference: '#lab-test-result',
         type: 'Observation',
       },
     ],

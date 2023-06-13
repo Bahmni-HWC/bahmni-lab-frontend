@@ -25,6 +25,13 @@
   grid-template-columns: 1fr 1fr;
 }
 
+.inputFieldWithCheckbox{
+  padding-top: 1rem;
+  display: flex;
+  align-items: end;
+  width:25rem;
+}
+
 .overlayButtons button {
   max-width: unset;
 }
