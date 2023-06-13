@@ -261,27 +261,27 @@ const TestResults: React.FC<TestResultProps> = ({
               invalid={labResult.size != 0 && isInvalid(test)}
               invalidText="Please enter valid data"
             />
-            <span style={{paddingLeft:'1rem'}}>
-            <Checkbox
-              key={`abnormal-${test.uuid}`}
-              id={`abnormal-${test.uuid}`}
-              labelText={'Abnormal'}
-              checked={
-                getValue(test) !== '' &&
-                (labResult.get(test.uuid)?.abnormal ?? false)
-              }
-              onChange={() =>
-                setLabResult(
-                  map =>
-                    new Map(
-                      map.set(test.uuid, {
-                        value: labResult.get(test.uuid)?.value,
-                        abnormal: !labResult.get(test.uuid)?.abnormal,
-                      }),
-                    ),
-                )
-              }
-            />
+            <span style={{paddingLeft: '1rem'}}>
+              <Checkbox
+                key={`abnormal-${test.uuid}`}
+                id={`abnormal-${test.uuid}`}
+                labelText={'Abnormal'}
+                checked={
+                  getValue(test) !== '' &&
+                  (labResult.get(test.uuid)?.abnormal ?? false)
+                }
+                onChange={() =>
+                  setLabResult(
+                    map =>
+                      new Map(
+                        map.set(test.uuid, {
+                          value: labResult.get(test.uuid)?.value,
+                          abnormal: !labResult.get(test.uuid)?.abnormal,
+                        }),
+                      ),
+                  )
+                }
+              />
             </span>
           </div>
         )
