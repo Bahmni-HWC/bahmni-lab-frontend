@@ -41,8 +41,6 @@ import {
   mockTestResult,
   mockTestResultResponse,
 } from '../../__mocks__/testResults'
-import {PendingLabOrdersProvider} from '../../context/pending-orders-context'
-import {LabTestResultsProvider} from '../../context/lab-test-results-context'
 
 const mockPatientUuid = '123'
 const matchParams = {
@@ -108,15 +106,11 @@ describe('Patient lab details', () => {
       })
 
     render(
-      <LabTestResultsProvider>
-        <PendingLabOrdersProvider>
-          <PatientLabDetails
-            match={matchParams}
-            history={undefined}
-            location={undefined}
-          />
-        </PendingLabOrdersProvider>
-      </LabTestResultsProvider>,
+      <PatientLabDetails
+        match={matchParams}
+        history={undefined}
+        location={undefined}
+      />,
     )
     await waitFor(() =>
       expect(screen.getByText(/loading \.\.\./i)).toBeInTheDocument(),
@@ -131,15 +125,11 @@ describe('Patient lab details', () => {
       })
 
     render(
-      <LabTestResultsProvider>
-        <PendingLabOrdersProvider>
-          <PatientLabDetails
-            match={matchParams}
-            history={undefined}
-            location={undefined}
-          />
-        </PendingLabOrdersProvider>
-      </LabTestResultsProvider>,
+      <PatientLabDetails
+        match={matchParams}
+        history={undefined}
+        location={undefined}
+      />,
     )
     expect(screen.queryByText(/loading \.\.\./i)).not.toBeInTheDocument()
     expect(
@@ -150,15 +140,11 @@ describe('Patient lab details', () => {
   it('should show patient information in the patient header slot when usePatient call succeeds', async () => {
     render(
       <BrowserRouter>
-        <LabTestResultsProvider>
-          <PendingLabOrdersProvider>
-            <PatientLabDetails
-              match={matchParams}
-              history={undefined}
-              location={undefined}
-            />
-          </PendingLabOrdersProvider>
-        </LabTestResultsProvider>
+        <PatientLabDetails
+          match={matchParams}
+          history={undefined}
+          location={undefined}
+        />
       </BrowserRouter>,
     )
     expect(
@@ -184,15 +170,11 @@ describe('Patient lab details', () => {
     const mockedOpenmrsFetch = openmrsFetch as jest.Mock
     render(
       <BrowserRouter>
-        <LabTestResultsProvider>
-          <PendingLabOrdersProvider>
-            <PatientLabDetails
-              match={matchParams}
-              history={undefined}
-              location={undefined}
-            />
-          </PendingLabOrdersProvider>
-        </LabTestResultsProvider>
+        <PatientLabDetails
+          match={matchParams}
+          history={undefined}
+          location={undefined}
+        />
       </BrowserRouter>,
     )
     expect(screen.getByTitle(/paginated-table/i)).toBeInTheDocument()
@@ -211,15 +193,11 @@ describe('Patient lab details', () => {
   it('should display Overlay on click of upload report button', () => {
     render(
       <BrowserRouter>
-        <LabTestResultsProvider>
-          <PendingLabOrdersProvider>
-            <PatientLabDetails
-              match={matchParams}
-              history={undefined}
-              location={undefined}
-            />
-          </PendingLabOrdersProvider>
-        </LabTestResultsProvider>
+        <PatientLabDetails
+          match={matchParams}
+          history={undefined}
+          location={undefined}
+        />
       </BrowserRouter>,
     )
 
@@ -238,15 +216,11 @@ describe('Patient lab details', () => {
     render(
       <SWRConfig value={{provider: () => new Map()}}>
         <BrowserRouter>
-          <LabTestResultsProvider>
-            <PendingLabOrdersProvider>
-              <PatientLabDetails
-                match={matchParams}
-                history={undefined}
-                location={undefined}
-              />
-            </PendingLabOrdersProvider>
-          </LabTestResultsProvider>
+          <PatientLabDetails
+            match={matchParams}
+            history={undefined}
+            location={undefined}
+          />
         </BrowserRouter>
       </SWRConfig>,
     )
@@ -313,15 +287,11 @@ describe('Patient lab details', () => {
     render(
       <SWRConfig value={{provider: () => new Map()}}>
         <BrowserRouter>
-          <LabTestResultsProvider>
-            <PendingLabOrdersProvider>
-              <PatientLabDetails
-                match={matchParams}
-                history={undefined}
-                location={undefined}
-              />
-            </PendingLabOrdersProvider>
-          </LabTestResultsProvider>
+          <PatientLabDetails
+            match={matchParams}
+            history={undefined}
+            location={undefined}
+          />
         </BrowserRouter>
       </SWRConfig>,
     )
@@ -396,15 +366,11 @@ describe('Patient lab details', () => {
     render(
       <SWRConfig value={{provider: () => new Map()}}>
         <BrowserRouter>
-          <LabTestResultsProvider>
-            <PendingLabOrdersProvider>
-              <PatientLabDetails
-                match={matchParams}
-                history={undefined}
-                location={undefined}
-              />
-            </PendingLabOrdersProvider>
-          </LabTestResultsProvider>
+          <PatientLabDetails
+            match={matchParams}
+            history={undefined}
+            location={undefined}
+          />
         </BrowserRouter>
       </SWRConfig>,
     )
@@ -458,15 +424,11 @@ describe('Patient lab details', () => {
     render(
       <SWRConfig value={{provider: () => new Map()}}>
         <BrowserRouter>
-          <LabTestResultsProvider>
-            <PendingLabOrdersProvider>
-              <PatientLabDetails
-                match={matchParams}
-                history={undefined}
-                location={undefined}
-              />
-            </PendingLabOrdersProvider>
-          </LabTestResultsProvider>
+          <PatientLabDetails
+            match={matchParams}
+            history={undefined}
+            location={undefined}
+          />
         </BrowserRouter>
       </SWRConfig>,
     )
@@ -536,15 +498,11 @@ describe('Patient lab details', () => {
     render(
       <SWRConfig value={{provider: () => new Map()}}>
         <BrowserRouter>
-          <LabTestResultsProvider>
-            <PendingLabOrdersProvider>
-              <PatientLabDetails
-                match={matchParams}
-                history={undefined}
-                location={undefined}
-              />
-            </PendingLabOrdersProvider>
-          </LabTestResultsProvider>
+          <PatientLabDetails
+            match={matchParams}
+            history={undefined}
+            location={undefined}
+          />
         </BrowserRouter>
       </SWRConfig>,
     )
@@ -619,15 +577,11 @@ describe('Patient lab details', () => {
     render(
       <SWRConfig value={{provider: () => new Map()}}>
         <BrowserRouter>
-          <LabTestResultsProvider>
-            <PendingLabOrdersProvider>
-              <PatientLabDetails
-                match={matchParams}
-                history={undefined}
-                location={undefined}
-              />
-            </PendingLabOrdersProvider>
-          </LabTestResultsProvider>
+          <PatientLabDetails
+            match={matchParams}
+            history={undefined}
+            location={undefined}
+          />
         </BrowserRouter>
       </SWRConfig>,
     )
@@ -709,15 +663,11 @@ describe('Patient lab details', () => {
     render(
       <SWRConfig value={{provider: () => new Map()}}>
         <BrowserRouter>
-          <LabTestResultsProvider>
-            <PendingLabOrdersProvider>
-              <PatientLabDetails
-                match={matchParams}
-                history={undefined}
-                location={undefined}
-              />
-            </PendingLabOrdersProvider>
-          </LabTestResultsProvider>
+          <PatientLabDetails
+            match={matchParams}
+            history={undefined}
+            location={undefined}
+          />
         </BrowserRouter>
       </SWRConfig>,
     )
@@ -786,15 +736,11 @@ describe('Patient lab details', () => {
     render(
       <SWRConfig value={{provider: () => new Map()}}>
         <BrowserRouter>
-          <LabTestResultsProvider>
-            <PendingLabOrdersProvider>
-              <PatientLabDetails
-                match={matchParams}
-                history={undefined}
-                location={undefined}
-              />
-            </PendingLabOrdersProvider>
-          </LabTestResultsProvider>
+          <PatientLabDetails
+            match={matchParams}
+            history={undefined}
+            location={undefined}
+          />
         </BrowserRouter>
       </SWRConfig>,
     )
@@ -850,15 +796,11 @@ describe('Patient lab details', () => {
     render(
       <SWRConfig value={{provider: () => new Map()}}>
         <BrowserRouter>
-          <LabTestResultsProvider>
-            <PendingLabOrdersProvider>
-              <PatientLabDetails
-                match={matchParams}
-                history={undefined}
-                location={undefined}
-              />
-            </PendingLabOrdersProvider>
-          </LabTestResultsProvider>
+          <PatientLabDetails
+            match={matchParams}
+            history={undefined}
+            location={undefined}
+          />
         </BrowserRouter>
       </SWRConfig>,
     )
@@ -931,15 +873,11 @@ describe('Patient lab details', () => {
     render(
       <SWRConfig value={{provider: () => new Map()}}>
         <BrowserRouter>
-          <LabTestResultsProvider>
-            <PendingLabOrdersProvider>
-              <PatientLabDetails
-                match={matchParams}
-                history={undefined}
-                location={undefined}
-              />
-            </PendingLabOrdersProvider>
-          </LabTestResultsProvider>
+          <PatientLabDetails
+            match={matchParams}
+            history={undefined}
+            location={undefined}
+          />
         </BrowserRouter>
       </SWRConfig>,
     )
@@ -1006,45 +944,6 @@ describe('Patient lab details', () => {
         new Date(currentDay).toISOString(),
       ),
     )
-  })
-  it('should have Enter test results button disable until any open order is selected', async () => {
-    const mockedOpenmrsFetch = openmrsFetch as jest.Mock
-    mockedOpenmrsFetch
-      .mockReturnValueOnce(mockPendingLabOrdersResponse)
-      .mockReturnValueOnce(mockEmptyReportTableResponse)
-      .mockReturnValueOnce(mockLabTestsResponse)
-      .mockReturnValueOnce(mockLabConfigResponse)
-    render(
-      <SWRConfig value={{provider: () => new Map()}}>
-        <BrowserRouter>
-          <LabTestResultsProvider>
-            <PendingLabOrdersProvider>
-              <PatientLabDetails
-                match={matchParams}
-                history={undefined}
-                location={undefined}
-              />
-            </PendingLabOrdersProvider>
-          </LabTestResultsProvider>
-        </BrowserRouter>
-      </SWRConfig>,
-    )
-
-    await waitFor(() => {
-      expect(screen.getByText(/Pending lab orders/i)).toBeInTheDocument()
-    })
-
-    expect(
-      screen.getByRole('button', {name: /enter test results/i}),
-    ).toBeDisabled()
-
-    expect(screen.getByRole('cell', {name: 'Dummy Test'})).toBeInTheDocument()
-
-    userEvent.click(screen.getAllByRole('checkbox', {name: /Select row/i})[2])
-
-    expect(
-      screen.getByRole('button', {name: /enter test results/i}),
-    ).not.toBeDisabled()
   })
 })
 

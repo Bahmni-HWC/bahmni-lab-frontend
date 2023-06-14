@@ -12,10 +12,7 @@ import React, {useEffect, useState} from 'react'
 import {RouteComponentProps} from 'react-router-dom'
 import Loader from '../../common/loader/loader.component'
 import {LabTestResultsProvider} from '../../context/lab-test-results-context'
-import {
-  PendingLabOrdersProvider,
-  usePendingLabOrderContext,
-} from '../../context/pending-orders-context'
+import {PendingLabOrdersProvider} from '../../context/pending-orders-context'
 import {UploadReportProvider} from '../../context/upload-report-context'
 import {
   auditLogURL,
@@ -55,7 +52,6 @@ const PatientLabDetails: React.FC<RouteComponentProps<PatientParamsType>> = ({
   const [onEnterResultButtonClick, setOnEnterResultButtonClick] = useState<
     boolean
   >(false)
-  const {selectedPendingOrder} = usePendingLabOrderContext()
 
   const handleClick = () => {
     setOnButtonClick(true)
@@ -167,63 +163,66 @@ const PatientLabDetails: React.FC<RouteComponentProps<PatientParamsType>> = ({
               </Row>
             </Grid>
           </div>
-          <div style={{paddingBottom: '2rem'}}>
-            <PendingLabOrdersTable
-              patientUuid={patientUuid}
-              onButtonClick={onButtonClick}
-              onEnterResultButtonClick={onEnterResultButtonClick}
-              reloadTableData={reloadReportTable}
-            />
-          </div>
-          {/* className={styles.testresultinputfield} */}
-          <div style={{float: 'right'}} className={styles.flexContainer}>
-            <Button
-              renderIcon={AddFilled16}
-              onClick={handleClick}
-              style={{margin: '0%'}}
-            >
-              Upload Report
-            </Button>
-            {onButtonClick && (
-              <UploadReportProvider>
-                <UploadReport
-                  saveHandler={(isSaveSuccess = false) =>
-                    handleUploadAndSave(isSaveSuccess)
-                  }
-                  closeHandler={() => handleClose()}
-                  header="Upload Report"
+          <LabTestResultsProvider>
+            <PendingLabOrdersProvider>
+              <div style={{paddingBottom: '2rem'}}>
+                <PendingLabOrdersTable
                   patientUuid={patientUuid}
+                  onButtonClick={onButtonClick}
+                  onEnterResultButtonClick={onEnterResultButtonClick}
+                  reloadTableData={reloadReportTable}
                 />
-              </UploadReportProvider>
-            )}
-            {labConfig?.data?.labLite.captureTestResults && (
-              <Button
-                disabled={selectedPendingOrder?.length == 0}
-                renderIcon={AddFilled16}
-                onClick={enterResultsHandleClick}
-              >
-                Enter Test Results
-              </Button>
-            )}
-            {onEnterResultButtonClick && (
-              <UploadReportProvider>
-                <TestResults
-                  saveHandler={(isSaveSuccess = false) => {
-                    handleUploadAndSave(isSaveSuccess)
-                  }}
-                  closeHandler={() => enterResultsHandleClose()}
-                  header="Enter Test Results"
-                  patientUuid={patientUuid}
-                />
-              </UploadReportProvider>
-            )}
-          </div>
-          <div style={{marginTop: '2rem', marginBottom: '2rem'}}>
-            <ReportTable
-              patientUuid={patientUuid}
-              reloadTableData={reloadReportTable}
-            />
-          </div>
+              </div>
+              {/* className={styles.testresultinputfield} */}
+              <div style={{float: 'right'}} className={styles.flexContainer}>
+                <Button
+                  renderIcon={AddFilled16}
+                  onClick={handleClick}
+                  style={{margin: '0%'}}
+                >
+                  Upload Report
+                </Button>
+                {onButtonClick && (
+                  <UploadReportProvider>
+                    <UploadReport
+                      saveHandler={(isSaveSuccess = false) =>
+                        handleUploadAndSave(isSaveSuccess)
+                      }
+                      closeHandler={() => handleClose()}
+                      header="Upload Report"
+                      patientUuid={patientUuid}
+                    />
+                  </UploadReportProvider>
+                )}
+                {labConfig?.data?.labLite.captureTestResults && (
+                  <Button
+                    renderIcon={AddFilled16}
+                    onClick={enterResultsHandleClick}
+                  >
+                    Enter Test Results
+                  </Button>
+                )}
+                {onEnterResultButtonClick && (
+                  <UploadReportProvider>
+                    <TestResults
+                      saveHandler={(isSaveSuccess = false) => {
+                        handleUploadAndSave(isSaveSuccess)
+                      }}
+                      closeHandler={() => enterResultsHandleClose()}
+                      header="Enter Test Results"
+                      patientUuid={patientUuid}
+                    />
+                  </UploadReportProvider>
+                )}
+              </div>
+            </PendingLabOrdersProvider>
+            <div style={{marginTop: '2rem', marginBottom: '2rem'}}>
+              <ReportTable
+                patientUuid={patientUuid}
+                reloadTableData={reloadReportTable}
+              />
+            </div>
+          </LabTestResultsProvider>
         </div>
       )}
     </main>

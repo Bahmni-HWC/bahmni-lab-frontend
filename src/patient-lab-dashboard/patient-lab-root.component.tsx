@@ -11,8 +11,6 @@ import Home from '../home/home'
 import {UnauthorisedResponse} from '../common/unauthorized-response/unauthorised-response'
 import PatientLabDetails from './patient-lab-details/patient-lab-details'
 import {UserHasAccess} from '@openmrs/esm-framework'
-import {PendingLabOrdersProvider} from '../context/pending-orders-context'
-import {LabTestResultsProvider} from '../context/lab-test-results-context'
 
 const swrConfiguration = {
   // Maximum number of retries when the backend returns an error
@@ -30,15 +28,11 @@ const Root: React.FC = () => {
         <SWRConfig value={swrConfiguration}>
           <BrowserRouter basename={spaRoot}>
             <Route exact path={labEntryHomePath} component={Home} />
-            <LabTestResultsProvider>
-              <PendingLabOrdersProvider>
-                <Route
-                  exact
-                  path={patientLabDetailsRoute}
-                  component={PatientLabDetails}
-                />
-              </PendingLabOrdersProvider>
-            </LabTestResultsProvider>
+            <Route
+              exact
+              path={patientLabDetailsRoute}
+              component={PatientLabDetails}
+            />
           </BrowserRouter>
         </SWRConfig>
       </main>
