@@ -12,9 +12,7 @@ import {
 import React, {useEffect, useState} from 'react'
 import {RouteComponentProps} from 'react-router-dom'
 import Loader from '../../common/loader/loader.component'
-import {
-  usePendingLabOrderContext,
-} from '../../context/pending-orders-context'
+import {usePendingLabOrderContext} from '../../context/pending-orders-context'
 import {UploadReportProvider} from '../../context/upload-report-context'
 import {
   auditLogURL,
@@ -56,7 +54,7 @@ const PatientLabDetails: React.FC<RouteComponentProps<PatientParamsType>> = ({
   >(false)
   const {selectedPendingOrder} = usePendingLabOrderContext()
   const [duplicateOrder, setDuplicateOrder] = useState<boolean>(false)
-  
+
   const handleClick = () => {
     setOnButtonClick(true)
     setOnSaveSuccess(false)
@@ -221,13 +219,13 @@ const PatientLabDetails: React.FC<RouteComponentProps<PatientParamsType>> = ({
               </UploadReportProvider>
             )}
             {labConfig?.data?.labLite.captureTestResults && (
-                <Button
-                  disabled={selectedPendingOrder?.length == 0 || duplicateOrder}
-                  renderIcon={AddFilled16}
-                  onClick={enterResultsHandleClick}
-                >
-                  Enter Test Results
-                </Button>
+              <Button
+                disabled={selectedPendingOrder?.length == 0 || duplicateOrder}
+                renderIcon={AddFilled16}
+                onClick={enterResultsHandleClick}
+              >
+                Enter Test Results
+              </Button>
             )}
             {onEnterResultButtonClick && (
               <UploadReportProvider>
