@@ -12,9 +12,7 @@ import {
 import React, {useEffect, useState} from 'react'
 import {RouteComponentProps} from 'react-router-dom'
 import Loader from '../../common/loader/loader.component'
-import {LabTestResultsProvider} from '../../context/lab-test-results-context'
 import {
-  PendingLabOrdersProvider,
   usePendingLabOrderContext,
 } from '../../context/pending-orders-context'
 import {UploadReportProvider} from '../../context/upload-report-context'

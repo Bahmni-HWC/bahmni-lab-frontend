@@ -38,7 +38,7 @@ const TestResults: React.FC<TestResultProps> = ({
   const [reportDate, setReportDate] = useState<Date>(null)
   const [reportConclusion, setReportConclusion] = useState<string>('')
   const {doctor, setDoctor} = useDoctorDetails()
-  const [answer, setAnswer] = useState(null)
+  const [answer, setAnswer] = useState(new Map())
   const maxCount: number = 500
   const {
     selectedPendingOrder,
@@ -57,7 +57,7 @@ const TestResults: React.FC<TestResultProps> = ({
     setDoctor(null)
     setShowReportConclusionLabel(true)
     setLabResult(new Map())
-    setAnswer(null)
+    setAnswer(new Map())
   }
 
   selectedPendingOrder.forEach(selectedPendingOrder => {
@@ -81,7 +81,10 @@ const TestResults: React.FC<TestResultProps> = ({
   }
 
   const isInvalid = test => {
-    if (labResult.get(test.uuid)?.value !== '') {
+    if (
+      labResult.get(test.uuid)?.value &&
+      labResult.get(test.uuid)?.value !== ''
+    ) {
       const datatype = test?.datatype.name
       if (datatype === 'Numeric' && isNaN(labResult.get(test.uuid)?.value)) {
         return true
@@ -194,7 +197,7 @@ const TestResults: React.FC<TestResultProps> = ({
   const getValue = test => labResult.get(test.uuid)?.value ?? ''
 
   const updateLabResult = (selectedItem, test) => {
-    setAnswer(selectedItem)
+    setAnswer(map => new Map(map.set(test.uuid, selectedItem)))
     if (selectedItem.uuid)
       setLabResult(
         map =>
@@ -239,9 +242,11 @@ const TestResults: React.FC<TestResultProps> = ({
               itemToString={data => data.name.name}
               label="Select an answer"
               onChange={({selectedItem}) => updateLabResult(selectedItem, test)}
-              selectedItem={answer}
+              selectedItem={answer.get(test.uuid) ?? ''}
               helperText={
-                answer && answer.name.name.length > 35 ? answer.name.name : ''
+                answer.get(test.uuid)?.name.name.length > 35
+                  ? answer.get(test.uuid)?.name.name
+                  : ''
               }
             />
           </div>
