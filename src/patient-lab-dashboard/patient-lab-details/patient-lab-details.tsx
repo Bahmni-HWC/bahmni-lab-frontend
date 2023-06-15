@@ -58,6 +58,7 @@ const PatientLabDetails: React.FC<RouteComponentProps<PatientParamsType>> = ({
   >(false)
   const {selectedPendingOrder} = usePendingLabOrderContext()
   const [duplicateOrder, setDuplicateOrder] = useState<boolean>(false)
+  
   const handleClick = () => {
     setOnButtonClick(true)
     setOnSaveSuccess(false)
@@ -205,6 +206,7 @@ const PatientLabDetails: React.FC<RouteComponentProps<PatientParamsType>> = ({
               renderIcon={AddFilled16}
               onClick={handleClick}
               style={{margin: '0%'}}
+              disabled={duplicateOrder}
             >
               Upload Report
             </Button>
