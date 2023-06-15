@@ -262,7 +262,6 @@ describe('TestResults Report', () => {
     userEvent.type(screen.getAllByPlaceholderText(/Enter value/i)[0], 'numeric')
     userEvent.type(screen.getAllByPlaceholderText(/Enter value/i)[1], '22')
     expect(screen.getByText(/select an answer/i)).toBeInTheDocument()
-
     userEvent.click(
       screen.getByRole('button', {
         name: /rdt malaria/i,
