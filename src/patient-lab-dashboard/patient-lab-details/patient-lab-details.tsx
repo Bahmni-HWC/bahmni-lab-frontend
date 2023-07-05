@@ -139,22 +139,17 @@ const PatientLabDetails: React.FC<RouteComponentProps<PatientParamsType>> = ({
 
   return (
     <main
-      className={
-        onButtonClick || onEnterResultButtonClick
-          ? styles.patientDetailsContainerWithSidePanel
-          : styles.patientDetailsContainer
-      }
     >
       {isLoading ? (
         <Loader />
       ) : error || labConfigError ? (
         <div>Something went wrong: {error.message}</div>
       ) : (
-        <div>
-          <div style={{marginBottom: '3rem'}}>
-            <Grid style={{paddingLeft: '0'}}>
+        <Grid style={{padding:'1rem' }} >
+          <Column style={{padding:'0' }} sm={4} lg={(onButtonClick || onEnterResultButtonClick) ? 8 : 16} >
+            <Grid style={{padding: '0', marginBottom: '3rem'}}>
               <Row>
-                <Column lg={9}>
+                <Column sm={4} lg={9}>
                   <ExtensionSlot
                     extensionSlotName="patient-header-slot"
                     state={{
@@ -180,7 +175,6 @@ const PatientLabDetails: React.FC<RouteComponentProps<PatientParamsType>> = ({
                 </Column>
               </Row>
             </Grid>
-          </div>
           {duplicateOrder && (
             <InlineNotification
               kind="error"
@@ -246,7 +240,8 @@ const PatientLabDetails: React.FC<RouteComponentProps<PatientParamsType>> = ({
               reloadTableData={reloadReportTable}
             />
           </div>
-        </div>
+          </Column>
+        </Grid>
       )}
     </main>
   )

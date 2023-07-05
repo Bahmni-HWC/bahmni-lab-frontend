@@ -371,7 +371,7 @@ const SelectTest = ({isDiscardButtonClicked}) => {
           className={isAvailableTestsClicked ? styles.accordionItem : ''}
           data-testid="available-tests"
           title={`Available Tests ( ${getAvailableTestsCount()} )`}
-          open={isAvailableTestsClicked}
+          open={isAvailableTestsClicked && !selectedPendingOrder.length}
           children={renderSearchResults()}
           onClick={() => setIsAvailableTestsClicked(!isAvailableTestsClicked)}
         />
