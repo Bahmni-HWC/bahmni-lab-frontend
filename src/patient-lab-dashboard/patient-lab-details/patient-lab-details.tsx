@@ -138,15 +138,18 @@ const PatientLabDetails: React.FC<RouteComponentProps<PatientParamsType>> = ({
   }
 
   return (
-    <main
-    >
+    <main>
       {isLoading ? (
         <Loader />
       ) : error || labConfigError ? (
         <div>Something went wrong: {error.message}</div>
       ) : (
-        <Grid style={{padding:'1rem' }} >
-          <Column style={{padding:'0' }} sm={4} lg={(onButtonClick || onEnterResultButtonClick) ? 8 : 16} >
+        <Grid style={{padding: '1rem'}}>
+          <Column
+            style={{padding: '0'}}
+            sm={4}
+            lg={onButtonClick || onEnterResultButtonClick ? 8 : 16}
+          >
             <Grid style={{padding: '0', marginBottom: '3rem'}}>
               <Row>
                 <Column sm={4} lg={9}>
@@ -175,71 +178,71 @@ const PatientLabDetails: React.FC<RouteComponentProps<PatientParamsType>> = ({
                 </Column>
               </Row>
             </Grid>
-          {duplicateOrder && (
-            <InlineNotification
-              kind="error"
-              title="Duplicate Order"
-              subtitle="You have selected duplicate orders. Please select unique orders."
-              lowContrast={true}
-            />
-          )}
-          <div style={{paddingBottom: '2rem'}}>
-            <PendingLabOrdersTable
-              patientUuid={patientUuid}
-              onButtonClick={onButtonClick}
-              onEnterResultButtonClick={onEnterResultButtonClick}
-              reloadTableData={reloadReportTable}
-            />
-          </div>
-          <div style={{float: 'right'}} className={styles.flexContainer}>
-            <Button
-              renderIcon={AddFilled16}
-              onClick={handleClick}
-              style={{margin: '0%'}}
-              disabled={duplicateOrder}
-            >
-              Upload Report
-            </Button>
-            {onButtonClick && (
-              <UploadReportProvider>
-                <UploadReport
-                  saveHandler={(isSaveSuccess = false) =>
-                    handleUploadAndSave(isSaveSuccess)
-                  }
-                  closeHandler={() => handleClose()}
-                  header="Upload Report"
-                  patientUuid={patientUuid}
-                />
-              </UploadReportProvider>
+            {duplicateOrder && (
+              <InlineNotification
+                kind="error"
+                title="Duplicate Order"
+                subtitle="You have selected duplicate orders. Please select unique orders."
+                lowContrast={true}
+              />
             )}
-            {labConfig?.data?.labLite.captureTestResults && (
+            <div style={{paddingBottom: '2rem'}}>
+              <PendingLabOrdersTable
+                patientUuid={patientUuid}
+                onButtonClick={onButtonClick}
+                onEnterResultButtonClick={onEnterResultButtonClick}
+                reloadTableData={reloadReportTable}
+              />
+            </div>
+            <div style={{float: 'right'}} className={styles.flexContainer}>
               <Button
-                disabled={selectedPendingOrder?.length == 0 || duplicateOrder}
                 renderIcon={AddFilled16}
-                onClick={enterResultsHandleClick}
+                onClick={handleClick}
+                style={{margin: '0%'}}
+                disabled={duplicateOrder}
               >
-                Enter Test Results
+                Upload Report
               </Button>
-            )}
-            {onEnterResultButtonClick && (
-              <UploadReportProvider>
-                <TestResults
-                  saveHandler={(isSaveSuccess = false) => {
-                    handleUploadAndSave(isSaveSuccess)
-                  }}
-                  closeHandler={() => enterResultsHandleClose()}
-                  header="Enter Test Results"
-                  patientUuid={patientUuid}
-                />
-              </UploadReportProvider>
-            )}
-          </div>
-          <div style={{marginTop: '2rem', marginBottom: '2rem'}}>
-            <ReportTable
-              patientUuid={patientUuid}
-              reloadTableData={reloadReportTable}
-            />
-          </div>
+              {onButtonClick && (
+                <UploadReportProvider>
+                  <UploadReport
+                    saveHandler={(isSaveSuccess = false) =>
+                      handleUploadAndSave(isSaveSuccess)
+                    }
+                    closeHandler={() => handleClose()}
+                    header="Upload Report"
+                    patientUuid={patientUuid}
+                  />
+                </UploadReportProvider>
+              )}
+              {labConfig?.data?.labLite.captureTestResults && (
+                <Button
+                  disabled={selectedPendingOrder?.length == 0 || duplicateOrder}
+                  renderIcon={AddFilled16}
+                  onClick={enterResultsHandleClick}
+                >
+                  Enter Test Results
+                </Button>
+              )}
+              {onEnterResultButtonClick && (
+                <UploadReportProvider>
+                  <TestResults
+                    saveHandler={(isSaveSuccess = false) => {
+                      handleUploadAndSave(isSaveSuccess)
+                    }}
+                    closeHandler={() => enterResultsHandleClose()}
+                    header="Enter Test Results"
+                    patientUuid={patientUuid}
+                  />
+                </UploadReportProvider>
+              )}
+            </div>
+            <div style={{marginTop: '2rem', marginBottom: '2rem'}}>
+              <ReportTable
+                patientUuid={patientUuid}
+                reloadTableData={reloadReportTable}
+              />
+            </div>
           </Column>
         </Grid>
       )}
