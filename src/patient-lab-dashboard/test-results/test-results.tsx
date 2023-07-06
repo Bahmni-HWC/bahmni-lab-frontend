@@ -216,27 +216,41 @@ const TestResults: React.FC<TestResultProps> = ({
       )
   }
 
+  const getItems = (test, datatype) => {
+    const items = []
+    if (datatype === 'Boolean') {
+      items.push({name: {name: 'True'}}, {name: {name: 'False'}})
+    } else if (datatype === 'Coded') {
+      const answers = test.answers
+      items.push(...answers)
+    }
+    return items
+  }
+
+  const getDropdownItemToString = (test, labResult) => data => {
+    const itemName = data.name.name
+    if (
+      labResult.get(test.uuid)?.abnormal === true &&
+      labResult.get(test.uuid)?.value === itemName
+    ) {
+      return <span style={{color: 'red'}}>{itemName}</span>
+    }
+    return itemName
+  }
+
   const renderInputField = (test, index) => {
     if (test) {
-      const items = []
       const datatype = test.datatype.name
-      if (datatype === 'Boolean' || datatype === 'Coded') {
-        if (datatype === 'Boolean')
-          items.push({name: {name: 'True'}}, {name: {name: 'False'}})
-        else if (datatype === 'Coded') {
-          const answers = test.answers
-          for (let answer of answers) {
-            items.push(answer)
-          }
-        }
-        return (
-          <div className={styles.testresultinputfield}>
+      const items = getItems(test, datatype)
+      return (
+        <div className={styles.inputFieldWithCheckbox}>
+          {datatype === 'Boolean' || datatype === 'Coded' ? (
             <Dropdown
               titleText={getTestNameWithUnits(test)}
               id="answers-list-dropdown"
               title="answers list"
               items={items}
-              itemToString={data => data.name.name}
+              itemToString={getDropdownItemToString(test, labResult)}
               label="Select an answer"
               onChange={({selectedItem}) => updateLabResult(selectedItem, test)}
               selectedItem={answer.get(test.uuid) ?? ''}
@@ -246,11 +260,7 @@ const TestResults: React.FC<TestResultProps> = ({
                   : ''
               }
             />
-          </div>
-        )
-      } else
-        return (
-          <div className={styles.inputFieldWithCheckbox}>
+          ) : (
             <TextInput
               key={`text-${test.uuid}-${index}`}
               labelText={getTestNameWithUnits(test)}
@@ -263,30 +273,31 @@ const TestResults: React.FC<TestResultProps> = ({
               invalid={labResult.size != 0 && isInvalid(test)}
               invalidText="Please enter valid data"
             />
-            <span style={{paddingLeft: '1rem'}}>
-              <Checkbox
-                key={`abnormal-${test.uuid}`}
-                id={`abnormal-${test.uuid}`}
-                labelText={'Abnormal'}
-                checked={
-                  getValue(test) !== '' &&
-                  (labResult.get(test.uuid)?.abnormal ?? false)
-                }
-                onChange={() =>
-                  setLabResult(
-                    map =>
-                      new Map(
-                        map.set(test.uuid, {
-                          value: labResult.get(test.uuid)?.value,
-                          abnormal: !labResult.get(test.uuid)?.abnormal,
-                        }),
-                      ),
-                  )
-                }
-              />
-            </span>
-          </div>
-        )
+          )}
+          <span style={{paddingLeft: '1rem'}}>
+            <Checkbox
+              key={`abnormal-${test.uuid}`}
+              id={`abnormal-${test.uuid}`}
+              labelText={'Abnormal'}
+              checked={
+                getValue(test) !== '' &&
+                (labResult.get(test.uuid)?.abnormal ?? false)
+              }
+              onChange={() =>
+                setLabResult(
+                  map =>
+                    new Map(
+                      map.set(test.uuid, {
+                        value: labResult.get(test.uuid)?.value,
+                        abnormal: !labResult.get(test.uuid)?.abnormal,
+                      }),
+                    ),
+                )
+              }
+            />
+          </span>
+        </div>
+      )
     }
   }
   const renderTestResultWidget = () => {

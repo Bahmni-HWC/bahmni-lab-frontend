@@ -168,7 +168,7 @@ describe('TestResults Report', () => {
       color: 'red',
     })
   })
-  it('should indicate when the entered value is abnormal based on Checkbox', async () => {
+  it('te', async () => {
     localStorage.setItem('i18nextLng', 'en')
     const mockedLayout = useLayoutType as jest.Mock
     mockedLayout.mockReturnValue('desktop')
@@ -193,7 +193,7 @@ describe('TestResults Report', () => {
       screen.getByRole('button', {name: /save and upload/i}),
     ).toBeDisabled()
 
-    expect(screen.getAllByRole('checkbox', {name: /Abnormal/i}).length).toBe(2)
+    expect(screen.getAllByRole('checkbox', {name: /Abnormal/i}).length).toBe(3)
 
     userEvent.type(screen.getAllByPlaceholderText(/Enter value/i)[0], '6')
 
