@@ -283,17 +283,30 @@ const TestResults: React.FC<TestResultProps> = ({
                 getValue(test) !== '' &&
                 (labResult.get(test.uuid)?.abnormal ?? false)
               }
-              onChange={() =>
-                setLabResult(
-                  map =>
-                    new Map(
-                      map.set(test.uuid, {
-                        value: labResult.get(test.uuid)?.value,
-                        abnormal: !labResult.get(test.uuid)?.abnormal,
-                      }),
-                    ),
-                )
-              }
+              onChange={() => {
+                if (datatype === 'Coded')
+                  setLabResult(
+                    map =>
+                      new Map(
+                        map.set(test.uuid, {
+                          value: labResult.get(test.uuid)?.value,
+                          abnormal: !labResult.get(test.uuid)?.abnormal,
+                          codableConceptUuid: labResult.get(test.uuid)
+                            ?.codableConceptUuid,
+                        }),
+                      ),
+                  )
+                else
+                  setLabResult(
+                    map =>
+                      new Map(
+                        map.set(test.uuid, {
+                          value: labResult.get(test.uuid)?.value,
+                          abnormal: !labResult.get(test.uuid)?.abnormal,
+                        }),
+                      ),
+                  )
+              }}
             />
           </span>
         </div>
