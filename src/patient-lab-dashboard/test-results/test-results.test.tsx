@@ -168,7 +168,7 @@ describe('TestResults Report', () => {
       color: 'red',
     })
   })
-  it('te', async () => {
+  it('should indicate when the entered value is abnormal based on Checkbox', async () => {
     localStorage.setItem('i18nextLng', 'en')
     const mockedLayout = useLayoutType as jest.Mock
     mockedLayout.mockReturnValue('desktop')
