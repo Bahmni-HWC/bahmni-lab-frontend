@@ -227,7 +227,7 @@ const TestResults: React.FC<TestResultProps> = ({
     return items
   }
 
-  const getDropdownItemToString = (test, labResult) => data => {
+  const getDropdownItemToString = test => data => {
     const itemName = data.name.name
     if (
       labResult.get(test.uuid)?.abnormal === true &&
@@ -250,7 +250,7 @@ const TestResults: React.FC<TestResultProps> = ({
               id="answers-list-dropdown"
               title="answers list"
               items={items}
-              itemToString={getDropdownItemToString(test, labResult)}
+              itemToString={getDropdownItemToString(test)}
               label="Select an answer"
               onChange={({selectedItem}) => updateLabResult(selectedItem, test)}
               selectedItem={answer.get(test.uuid) ?? ''}

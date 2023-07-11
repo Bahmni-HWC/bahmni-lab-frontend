@@ -183,6 +183,7 @@ describe('TestResults Report', () => {
         patientUuid={'123'}
       />,
     )
+
     await waitFor(() =>
       expect(
         screen.getAllByPlaceholderText(/Enter value/i)[0],
