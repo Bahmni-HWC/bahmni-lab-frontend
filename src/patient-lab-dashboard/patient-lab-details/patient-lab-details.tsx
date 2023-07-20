@@ -144,7 +144,10 @@ const PatientLabDetails: React.FC<RouteComponentProps<PatientParamsType>> = ({
       ) : error || labConfigError ? (
         <div>Something went wrong: {error.message}</div>
       ) : (
-        <Grid style={{padding: '1rem'}} className={styles.patientLabDetContainer}>
+        <Grid
+          style={{padding: '1rem'}}
+          className={styles.patientLabDetContainer}
+        >
           <Column
             style={{padding: '0'}}
             sm={4}
@@ -237,7 +240,7 @@ const PatientLabDetails: React.FC<RouteComponentProps<PatientParamsType>> = ({
                 </UploadReportProvider>
               )}
             </div>
-            <div style={{marginTop: '2rem', marginBottom: '2rem'}}>
+            <div style={{marginTop: '4rem', marginBottom: '2rem'}}>
               <ReportTable
                 patientUuid={patientUuid}
                 reloadTableData={reloadReportTable}
