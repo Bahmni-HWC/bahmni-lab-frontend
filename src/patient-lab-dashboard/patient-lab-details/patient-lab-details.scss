@@ -12,3 +12,8 @@
     column-gap: 20px;
     align-items: flex-start;
 }
+.patientLabDetContainer{
+    @media all and (min-width: 768px) {
+        width: 70%;;
+    }
+}

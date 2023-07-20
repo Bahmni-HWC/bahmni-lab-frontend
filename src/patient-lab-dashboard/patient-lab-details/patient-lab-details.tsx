@@ -144,7 +144,7 @@ const PatientLabDetails: React.FC<RouteComponentProps<PatientParamsType>> = ({
       ) : error || labConfigError ? (
         <div>Something went wrong: {error.message}</div>
       ) : (
-        <Grid style={{padding: '1rem'}}>
+        <Grid style={{padding: '1rem'}} className={styles.patientLabDetContainer}>
           <Column
             style={{padding: '0'}}
             sm={4}
