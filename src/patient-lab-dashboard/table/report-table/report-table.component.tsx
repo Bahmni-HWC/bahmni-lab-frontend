@@ -201,6 +201,9 @@ const ReportTable = (props: ReportTableProps) => {
                       <TableHeader
                         id={header.header}
                         key={`${header.header}-${i}`}
+                        className={
+                          header.key === 'tests' && classes.stickyColumn
+                        }
                         {...getHeaderProps({header})}
                       >
                         {header.header}
@@ -260,7 +263,13 @@ const ReportTable = (props: ReportTableProps) => {
                                   )}
                                 </TableCell>
                               ) : (
-                                <TableCell key={cell.id}>
+                                <TableCell
+                                  key={cell.id}
+                                  className={
+                                    cell.id.includes('tests') &&
+                                    classes.stickyColumn
+                                  }
+                                >
                                   {cell.value}
                                 </TableCell>
                               )
