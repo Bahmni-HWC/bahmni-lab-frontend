@@ -32,9 +32,7 @@ const ImagePreviewComponent = ({
           open={showModal}
           onRequestClose={() => setShowModal(false)}
         >
-          <div className={classes.imageContainer}>
-            <img className={classes.image} src={url} alt={fileName}></img>
-          </div>
+          <img className={classes.image} src={url} alt={fileName}></img>
         </Modal>
       </div>
     </>

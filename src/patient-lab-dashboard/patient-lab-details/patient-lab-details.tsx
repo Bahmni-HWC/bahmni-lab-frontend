@@ -138,7 +138,12 @@ const PatientLabDetails: React.FC<RouteComponentProps<PatientParamsType>> = ({
   }
 
   return (
-    <main>
+    <main
+      className={
+        !(onButtonClick || onEnterResultButtonClick) &&
+        styles.patientDetailsContainer
+      }
+    >
       {isLoading ? (
         <Loader />
       ) : error || labConfigError ? (
@@ -203,6 +208,7 @@ const PatientLabDetails: React.FC<RouteComponentProps<PatientParamsType>> = ({
                 onClick={handleClick}
                 style={{margin: '0%'}}
                 disabled={duplicateOrder}
+                className={styles.responsiveButton}
               >
                 Upload Report
               </Button>
@@ -223,6 +229,7 @@ const PatientLabDetails: React.FC<RouteComponentProps<PatientParamsType>> = ({
                   disabled={selectedPendingOrder?.length == 0 || duplicateOrder}
                   renderIcon={AddFilled16}
                   onClick={enterResultsHandleClick}
+                  className={styles.responsiveButton}
                 >
                   Enter Test Results
                 </Button>

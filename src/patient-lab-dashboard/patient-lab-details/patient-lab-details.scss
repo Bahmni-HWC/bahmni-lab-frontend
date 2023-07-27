@@ -1,6 +1,8 @@
 .patientDetailsContainer {
-    margin: auto;
-    width: 50%
+    @media all and (min-width: 768px) {
+        margin: auto;
+        width: 50%
+    }
 }
 
 .patientDetailsContainerWithSidePanel {
@@ -13,7 +15,11 @@
     align-items: flex-start;
 }
 .patientLabDetContainer{
-    @media all and (min-width: 768px) {
-        width: 70%;;
+  max-width: 100%;
+}
+
+.responsiveButton {
+    @media all and (max-width: 768px) {
+        padding-right: 2.5rem;
     }
 }
