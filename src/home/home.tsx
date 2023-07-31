@@ -41,11 +41,11 @@ const Home = () => {
   }, [auditLogEnabledResponse, loggedInUser])
 
   return (
-    <div>
+    <div className={classes.homeContainer}>
       <div className={classes.image}>
         <img src={BahmniLogo} alt="Bahmni Logo" />
       </div>
-      <span className={classes.welcomeText}>WELCOME TO LAB ENTRY</span>
+      <h1 className={classes.welcomeText}>WELCOME TO LAB ENTRY</h1>
       <span className={classes.helpText}>
         Please click on the search icon above to get started
       </span>

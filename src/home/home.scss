@@ -1,34 +1,43 @@
-.image {
-    margin-top: 5%;
+.homeContainer {
     display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
     align-items: center;
-    justify-content: center;
+    height: 90vh;
+    gap: 1rem;
+    margin-top: 10%;
+    @media all and (min-width: 768px) {
+        gap: 1rem;
+        margin-top: 5%;
+    }
+}
+
+.image {
+    text-align: center;
 }
 
 .image img {
-    height: 10vw;
-    width: 30vw
+    width: 60vw;
+    @media all and (min-width: 768px) {
+        width: 30vw;
+    }
 }
 
 .welcomeText {
-    font-size: 3.5vw;
+    font-size: 6vw;
+    @media all and (min-width: 768px) {
+        font-size: 3vw;
+    }
     font-weight: 600;
-    line-height: 1.199;
-    letter-spacing: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-top: 5%;
 }
 
 .helpText {
-    font-size: 2vw;
-    margin-top: 3%;
+    font-size: 4vw;
     font-weight: 400;
     line-height: 1.199;
     letter-spacing: 0;
     font-style: oblique;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    @media all and (min-width: 768px) {
+        font-size: 2vw;
+    }
 }
