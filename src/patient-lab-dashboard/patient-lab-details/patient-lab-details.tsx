@@ -129,7 +129,6 @@ const PatientLabDetails: React.FC<RouteComponentProps<PatientParamsType>> = ({
     const conceptUUIDs = new Set()
     for (const order of selectedPendingOrder) {
       if (conceptUUIDs.has(order.conceptUuid)) {
-        console.log('ghjk')
         return true
       }
       conceptUUIDs.add(order.conceptUuid)

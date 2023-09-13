@@ -466,9 +466,10 @@ export const mockTestResult = {
 
 export const mockSelectedPendingOrder = [
   {
-    id: '161430AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA',
-    testName: 'Routine blood panel',
+    id: '5b0cdc41-7371-4c2f-a1e4-ed1bf7416a8d',
+    testName: 'Anaemia panel',
     date: 'May 03, 2022',
     orderedBy: 'Superman',
+    conceptUuid: '5b0cdc41-7371-4c2f-a1e4-ed1bf7416a8d',
   },
 ]
