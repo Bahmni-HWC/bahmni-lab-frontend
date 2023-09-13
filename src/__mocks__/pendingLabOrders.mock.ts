@@ -34,7 +34,18 @@ export const mockPendingLabOrdersResponse: LabOrdersFetchResponse = {
       provider: 'Super Man',
       providerUuid: '2',
       fulfillerStatus: null,
-    }
+    },
+    {
+      concept: {
+        name: 'Haemoglobin',
+        uuid: '21AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA',
+      },
+      orderDate: 1657188834000,
+      orderUuid: 'abf-123',
+      provider: 'Super Man',
+      providerUuid: '2',
+      fulfillerStatus: null,
+    },
   ],
 }
 

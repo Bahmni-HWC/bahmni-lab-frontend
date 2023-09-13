@@ -194,7 +194,7 @@ describe('TestResults Report', () => {
       screen.getByRole('button', {name: /save and upload/i}),
     ).toBeDisabled()
 
-    expect(screen.getAllByRole('checkbox', {name: /Abnormal/i}).length).toBe(3)
+    expect(screen.getAllByRole('checkbox', {name: /Abnormal/i}).length).toBe(2)
 
     userEvent.type(screen.getAllByPlaceholderText(/Enter value/i)[0], '6')
 
@@ -232,7 +232,7 @@ describe('TestResults Report', () => {
         screen.getAllByPlaceholderText(/Enter value/i)[0],
       ).toBeInTheDocument(),
     )
-    expect(screen.getAllByPlaceholderText(/Enter value/i).length).toBe(2)
+    expect(screen.getAllByPlaceholderText(/Enter value/i).length).toBe(1)
     expect(screen.getByText(/select an answer/i)).toBeInTheDocument()
   })
   it('should indicate error message when user enters invalid data', async () => {
@@ -261,7 +261,6 @@ describe('TestResults Report', () => {
     ).toBeDisabled()
 
     userEvent.type(screen.getAllByPlaceholderText(/Enter value/i)[0], 'numeric')
-    userEvent.type(screen.getAllByPlaceholderText(/Enter value/i)[1], '22')
     expect(screen.getByText(/select an answer/i)).toBeInTheDocument()
 
     userEvent.click(

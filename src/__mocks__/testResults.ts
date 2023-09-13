@@ -180,7 +180,7 @@ export const mockPanelTestResult = {
             conceptNameType: 'FULLY_SPECIFIED',
             links: [],
             resourceVersion: '1.9',
-          }
+          },
         ],
         set: false,
         datatype: {
@@ -219,86 +219,6 @@ export const mockPanelTestResult = {
             uuid: '1017FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF',
             description:
               'Percent of whole blood that is composed of red blood cells.',
-            locale: 'en',
-            links: [],
-            resourceVersion: '1.9',
-          },
-        ],
-        answers: [],
-        setMembers: [],
-        resourceVersion: '2.0',
-      },
-      {
-        uuid: '1026AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA',
-        name: {
-          display: 'Differential',
-          uuid: '1079BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB',
-          name: 'Differential',
-          locale: 'en',
-          localePreferred: true,
-          conceptNameType: 'FULLY_SPECIFIED',
-          links: [],
-          resourceVersion: '1.9',
-        },
-        names: [
-          {
-            display: 'Differential',
-            uuid: '1079BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB',
-            name: 'Differential',
-            locale: 'en',
-            localePreferred: true,
-            conceptNameType: 'FULLY_SPECIFIED',
-            links: [],
-            resourceVersion: '1.9',
-          },
-          {
-            display: 'Diff',
-            uuid: '86758BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB',
-            name: 'Diff',
-            locale: 'en',
-            localePreferred: false,
-            conceptNameType: 'SHORT',
-            links: [],
-            resourceVersion: '1.9',
-          },
-        ],
-        set: true,
-        datatype: {
-          uuid: '8d4a4c94-c2cc-11de-8d13-0010c6dffd0f',
-          display: 'N/A',
-          name: 'N/A',
-          description:
-            'Not associated with a datatype (e.g., term answers, sets)',
-          hl7Abbreviation: 'ZZ',
-          retired: false,
-          links: [],
-          resourceVersion: '1.8',
-        },
-        conceptClass: {
-          uuid: '8d492026-c2cc-11de-8d13-0010c6dffd0f',
-          display: 'LabSet',
-          name: 'LabSet',
-          description: 'Panels',
-          retired: false,
-          links: [],
-          resourceVersion: '1.8',
-        },
-        hiNormal: null,
-        hiAbsolute: null,
-        hiCritical: null,
-        lowNormal: null,
-        lowAbsolute: null,
-        lowCritical: null,
-        units: null,
-        allowDecimal: null,
-        handler: null,
-        descriptions: [
-          {
-            display:
-              'Describes the relative distribution of the different types of white blood cells',
-            uuid: '1028FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF',
-            description:
-              'Describes the relative distribution of the different types of white blood cells',
             locale: 'en',
             links: [],
             resourceVersion: '1.9',
@@ -425,26 +345,61 @@ export const mockPanelTestResult = {
 
 export const mockTestResult = {
   data: {
-    uuid: '1643AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA',
+    uuid: '21AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA',
     name: {
-      display: 'Dummy test',
-      uuid: '1923BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB',
-      name: 'Dummy test',
+      display: 'Haemoglobin',
+      uuid: '23BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB',
+      name: 'Haemoglobin',
       locale: 'en',
       localePreferred: true,
       conceptNameType: 'FULLY_SPECIFIED',
-      links: [],
       resourceVersion: '1.9',
     },
     names: [
       {
-        display: 'RDT Malaria',
-        uuid: '86926BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB',
-        name: 'RDT Malaria',
+        display: 'Hemoglobin',
+        uuid: '110964BBBBBBBBBBBBBBBBBBBBBBBBBBBBBB',
+        name: 'Hemoglobin',
         locale: 'en',
         localePreferred: false,
-        conceptNameType: 'SHORT',
-        links: [],
+        conceptNameType: null,
+        links: [
+          {
+            rel: 'self',
+            uri:
+              'http://localhost:8080/openmrs/ws/rest/v1/concept/21AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA/name/110964BBBBBBBBBBBBBBBBBBBBBBBBBBBBBB',
+            resourceAlias: 'name',
+          },
+          {
+            rel: 'full',
+            uri:
+              'http://localhost:8080/openmrs/ws/rest/v1/concept/21AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA/name/110964BBBBBBBBBBBBBBBBBBBBBBBBBBBBBB?v=full',
+            resourceAlias: 'name',
+          },
+        ],
+        resourceVersion: '1.9',
+      },
+      {
+        display: 'Haemoglobin',
+        uuid: '23BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB',
+        name: 'Haemoglobin',
+        locale: 'en',
+        localePreferred: true,
+        conceptNameType: 'FULLY_SPECIFIED',
+        links: [
+          {
+            rel: 'self',
+            uri:
+              'http://localhost:8080/openmrs/ws/rest/v1/concept/21AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA/name/23BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB',
+            resourceAlias: 'name',
+          },
+          {
+            rel: 'full',
+            uri:
+              'http://localhost:8080/openmrs/ws/rest/v1/concept/21AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA/name/23BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB?v=full',
+            resourceAlias: 'name',
+          },
+        ],
         resourceVersion: '1.9',
       },
     ],
@@ -469,61 +424,41 @@ export const mockTestResult = {
       links: [],
       resourceVersion: '1.8',
     },
-    hiNormal: null,
+    hiNormal: 17.8,
     hiAbsolute: null,
     hiCritical: null,
-    lowNormal: null,
-    lowAbsolute: null,
-    lowCritical: null,
-    units: null,
-    allowDecimal: null,
+    lowNormal: 10.4,
+    lowAbsolute: 0,
+    lowCritical: 7,
+    units: 'g/dL',
+    allowDecimal: true,
     handler: null,
     descriptions: [
       {
-        display: 'Test for rapid diagnosis of Malaria.',
-        uuid: '1483FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF',
-        description: 'Test for rapid diagnosis of Malaria.',
+        display:
+          'The iron-containing respiratory pigment in red blood cells of vertebrates, consisting of about 6 percent heme and 94 percent globin.',
+        uuid: '21FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF',
+        description:
+          'The iron-containing respiratory pigment in red blood cells of vertebrates, consisting of about 6 percent heme and 94 percent globin.',
         locale: 'en',
         links: [
           {
             rel: 'self',
             uri:
-              'http://localhost/openmrs/ws/rest/v1/concept/1643AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA/description/1483FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF',
+              'http://localhost:8080/openmrs/ws/rest/v1/concept/21AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA/description/21FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF',
+            resourceAlias: 'description',
+          },
+          {
+            rel: 'full',
+            uri:
+              'http://localhost:8080/openmrs/ws/rest/v1/concept/21AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA/description/21FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF?v=full',
             resourceAlias: 'description',
           },
         ],
         resourceVersion: '1.9',
       },
     ],
-    answers: [
-      {
-        uuid: '703AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA',
-        name: {
-          display: 'Positive',
-          uuid: '737BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB',
-          name: 'Positive',
-          locale: 'en',
-          localePreferred: true,
-          conceptNameType: 'FULLY_SPECIFIED',
-          links: [],
-          resourceVersion: '1.9',
-        },
-        names: [
-          {
-            display: 'Positive',
-            uuid: '737BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB',
-            name: 'Positive',
-            locale: 'en',
-            localePreferred: true,
-            conceptNameType: 'FULLY_SPECIFIED',
-            links: [],
-            resourceVersion: '1.9',
-          },
-        ],
-        displayString: 'Positive',
-        resourceVersion: '2.0',
-      },
-    ],
+    answers: [],
     setMembers: [],
     resourceVersion: '2.0',
   },
