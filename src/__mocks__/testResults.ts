@@ -93,11 +93,11 @@ export const mockTestResultResponse: any = {
 
 export const mockPanelTestResult = {
   data: {
-    uuid: '161430AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA',
+    uuid: '5b0cdc41-7371-4c2f-a1e4-ed1bf7416a8d',
     name: {
-      display: 'Routine blood panel',
-      uuid: '110966BBBBBBBBBBBBBBBBBBBBBBBBBBBBBB',
-      name: 'Routine blood panel',
+      display: 'Anaemia Panel',
+      uuid: '8ce76a2c-e63d-4358-aabb-f8c5a6239fbd',
+      name: 'Anaemia Panel',
       locale: 'en',
       localePreferred: true,
       conceptNameType: 'FULLY_SPECIFIED',
@@ -106,9 +106,9 @@ export const mockPanelTestResult = {
     },
     names: [
       {
-        display: 'Routine blood panel',
+        display: 'Anaemia Panel',
         uuid: '110966BBBBBBBBBBBBBBBBBBBBBBBBBBBBBB',
-        name: 'Routine blood panel',
+        name: 'Anaemia Panel',
         locale: 'en',
         localePreferred: true,
         conceptNameType: 'FULLY_SPECIFIED',
@@ -149,11 +149,11 @@ export const mockPanelTestResult = {
     answers: [],
     setMembers: [
       {
-        uuid: '1015AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA',
+        uuid: '07a128f7-f596-45d5-a2a9-c447bc9e5112',
         name: {
-          display: 'Hematocrit',
-          uuid: '1066BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB',
-          name: 'Hematocrit',
+          display: 'Absolute Eosinphil Count',
+          uuid: 'fd2ec116-74c9-4d48-86cf-1c7e8aa1a748',
+          name: 'Absolute Eosinphil Count',
           locale: 'en',
           localePreferred: true,
           conceptNameType: 'FULLY_SPECIFIED',
@@ -229,10 +229,10 @@ export const mockPanelTestResult = {
         resourceVersion: '2.0',
       },
       {
-        uuid: '1643AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA',
+        uuid: '21AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA',
         name: {
-          display: 'Rapid test for malaria',
-          uuid: '1923BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB',
+          display: 'Haemoglobin',
+          uuid: 'b8b8c317-43d2-4c4b-a67d-2ef3782c53eb',
           name: 'Rapid test for malaria',
           locale: 'en',
           localePreferred: true,
