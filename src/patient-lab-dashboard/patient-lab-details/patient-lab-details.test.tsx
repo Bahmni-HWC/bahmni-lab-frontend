@@ -228,12 +228,74 @@ describe('Patient lab details', () => {
     expect(screen.getByLabelText(/overlay/i)).toBeInTheDocument()
   })
 
-  it('should pre-populate the selected tests in upload report and makes pending lab order table read only', async () => {
+  it('should pre-populate the selected test in upload report and makes pending lab order table read only', async () => {
     const mockedOpenmrsFetch = openmrsFetch as jest.Mock
     mockedOpenmrsFetch
       .mockReturnValueOnce(mockPendingLabOrdersResponse)
       .mockReturnValueOnce(mockEmptyReportTableResponse)
       .mockReturnValueOnce(mockLabTestsResponse)
+
+    render(
+      <SWRConfig value={{provider: () => new Map()}}>
+        <BrowserRouter>
+          <LabTestResultsProvider>
+            <PendingLabOrdersProvider>
+              <PatientLabDetails
+                match={matchParams}
+                history={undefined}
+                location={undefined}
+              />
+            </PendingLabOrdersProvider>
+          </LabTestResultsProvider>
+        </BrowserRouter>
+      </SWRConfig>,
+    )
+
+    await waitFor(() => {
+      expect(screen.getByText(/Pending lab orders/i)).toBeInTheDocument()
+    })
+
+    expect(
+      screen.getByRole('cell', {name: 'Routine Blood'}),
+    ).toBeInTheDocument()
+
+    userEvent.click(screen.getAllByRole('checkbox', {name: /Select row/i})[0])
+    userEvent.click(screen.getByRole('button', {name: /upload report/i}))
+
+    expect(
+      screen.getByRole('button', {name: /save and upload/i}),
+    ).toBeDisabled()
+
+    await waitFor(() => {
+      expect(screen.getByTestId(/selected-tests/i)).toHaveTextContent(
+        'Selected Tests ( 1 )',
+      )
+    })
+    expect(screen.queryByText(/absolute eosinphil count/i)).toBeInTheDocument()
+
+    expect(
+      screen.getAllByRole('checkbox', {name: /Select Row/i})[0],
+    ).toBeDisabled()
+
+    userEvent.click(screen.getByRole('button', {name: /close-icon/i}))
+
+    expect(
+      screen.getAllByRole('checkbox', {name: /Select Row/i})[1],
+    ).toBeEnabled()
+
+    userEvent.click(screen.getAllByRole('checkbox', {name: /Select row/i})[0])
+    userEvent.click(screen.getByRole('button', {name: /upload report/i}))
+
+    await waitFor(() => {
+      expect(screen.getByTestId(/selected-tests/i)).toHaveTextContent(
+        'Selected Tests ( 0 )',
+      )
+    })
+  })
+
+  it('should select one test at a time', async () => {
+    const mockedOpenmrsFetch = openmrsFetch as jest.Mock
+    mockedOpenmrsFetch.mockReturnValueOnce(mockPendingLabOrdersResponse)
 
     render(
       <SWRConfig value={{provider: () => new Map()}}>
@@ -265,38 +327,12 @@ describe('Patient lab details', () => {
     userEvent.click(screen.getAllByRole('checkbox', {name: /Select row/i})[0])
     userEvent.click(screen.getAllByRole('checkbox', {name: /Select row/i})[1])
 
-    userEvent.click(screen.getByRole('button', {name: /upload report/i}))
-
     expect(
-      screen.getByRole('button', {name: /save and upload/i}),
-    ).toBeDisabled()
-
-    await waitFor(() => {
-      expect(screen.getByTestId(/selected-tests/i)).toHaveTextContent(
-        'Selected Tests ( 2 )',
-      )
-    })
-
-    expect(screen.queryByText(/absolute eosinphil count/i)).toBeInTheDocument()
-
+      screen.getAllByRole('checkbox', {name: /select row/i})[0],
+    ).not.toBeChecked()
     expect(
-      screen.getAllByRole('checkbox', {name: /Select Row/i})[0],
-    ).toBeDisabled()
-
-    userEvent.click(screen.getByRole('button', {name: /close-icon/i}))
-    expect(
-      screen.getAllByRole('checkbox', {name: /Select Row/i})[0],
-    ).toBeEnabled()
-
-    userEvent.click(screen.getAllByRole('checkbox', {name: /Select row/i})[0])
-
-    userEvent.click(screen.getByRole('button', {name: /upload report/i}))
-
-    await waitFor(() => {
-      expect(screen.getByTestId(/selected-tests/i)).toHaveTextContent(
-        'Selected Tests ( 1 )',
-      )
-    })
+      screen.getAllByRole('checkbox', {name: /select row/i})[1],
+    ).toBeChecked()
   })
 
   it('should show success notification on report upload', async () => {

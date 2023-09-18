@@ -119,19 +119,7 @@ const PendingLabOrdersTable = ({
                 <Table title="lab-order-table" useZebraStyles={true}>
                   <TableHead>
                     <TableRow>
-                      <TableSelectAll
-                        {...getSelectionProps()}
-                        onSelect={() => {
-                          if (selectedPendingOrder.length > 0 && !selectAll) {
-                            setSelectAll(false)
-                            setSelectedPendingOrder([])
-                          } else {
-                            setSelectAll(!selectAll)
-                          }
-                        }}
-                        disabled={onButtonClick || onEnterResultButtonClick}
-                        checked={selectAll}
-                      />
+                      <TableHeader></TableHeader>
                       {headers.map(header => (
                         <TableHeader {...getHeaderProps({header})}>
                           {header.header}
@@ -149,16 +137,9 @@ const PendingLabOrdersTable = ({
                               intialRow => intialRow.id === row.id,
                             )[0]
                             if (selected) {
-                              setSelectedPendingOrder(prev => [
-                                ...prev,
-                                currentRow,
-                              ])
+                              setSelectedPendingOrder([currentRow])
                             } else {
-                              setSelectedPendingOrder(
-                                selectedPendingOrder.filter(
-                                  tempRow => tempRow.id !== currentRow.id,
-                                ),
-                              )
+                              setSelectedPendingOrder([])
                             }
                           }}
                           disabled={onButtonClick || onEnterResultButtonClick}
@@ -190,9 +171,7 @@ const PendingLabOrdersTable = ({
 
   function isChecked(row: TableSelectRowProps): boolean {
     return (
-      selectedPendingOrder.filter(
-        pendingOrderRow => pendingOrderRow.id === row.id,
-      ).length === 1
+      selectedPendingOrder.length === 1 && selectedPendingOrder[0].id === row.id
     )
   }
 }
