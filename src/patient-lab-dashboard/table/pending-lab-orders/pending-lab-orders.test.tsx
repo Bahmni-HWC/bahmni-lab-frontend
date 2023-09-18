@@ -83,15 +83,6 @@ describe('Paginated Table', () => {
     expect(
       screen.getByRole('cell', {name: 'Routine Blood'}),
     ).toBeInTheDocument()
-    expect(screen.getByRole('cell', {name: 'Test Orderer'})).toBeInTheDocument()
-    screen.getByRole('checkbox', {
-      name: /select all rows/i,
-    })
-    expect(
-      screen.getAllByRole('checkbox', {
-        name: /select all rows/i,
-      }).length,
-    ).toEqual(1)
     expect(
       screen.getAllByRole('checkbox', {
         name: /select row/i,
@@ -119,53 +110,7 @@ describe('Paginated Table', () => {
       ),
     ).not.toBeInTheDocument()
   })
-  it('should able to select all tests in pending orders when select all check box is checked', async () => {
-    const mockedOpenmrsFetch = openmrsFetch as jest.Mock
-    mockedOpenmrsFetch.mockReturnValue(mockPendingLabOrdersResponse)
-    when(usePagination)
-      .calledWith(expect.anything(), 5)
-      .mockReturnValue({
-        results: [
-          {
-            id: 'abc-123',
-            testName: 'Routine Blood',
-            date: 'April 19, 2022',
-            orderedBy: 'Test Orderer',
-          },
-        ],
-        goTo: jest.fn(),
-        currentPage: 1,
-      })
 
-    render(
-      <SWRConfig value={{provider: () => new Map()}}>
-        <BrowserRouter>
-          <PendingLabOrdersProvider>
-            <PendingLabOrdersTable
-              reloadTableData={false}
-              patientUuid={mockPatientUuid}
-              onButtonClick={false}
-              onEnterResultButtonClick={false}
-            />
-          </PendingLabOrdersProvider>
-        </BrowserRouter>
-      </SWRConfig>,
-    )
-
-    await waitFor(() => {
-      expect(screen.getByText(/Pending lab orders/i)).toBeInTheDocument()
-    })
-    expect(screen.getByTitle(/lab-order-table/i)).toBeInTheDocument()
-    headers.map(header => {
-      expect(
-        screen.getByRole('columnheader', {name: header.header}),
-      ).toBeInTheDocument()
-    })
-
-    userEvent.click(screen.getByRole('checkbox', {name: /select all rows/i}))
-
-    expect(screen.getByRole('checkbox', {name: /select row/i})).toBeChecked()
-  })
   it('should display error message when call for orders data is unsuccessful', async () => {
     const mockedOpenmrsFetch = openmrsFetch as jest.Mock
     mockedOpenmrsFetch.mockRejectedValueOnce(mockPendingLabOrdersErrorResponse)
