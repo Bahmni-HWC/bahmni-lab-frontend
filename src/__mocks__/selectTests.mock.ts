@@ -86,7 +86,7 @@ export const mockLabTestsResponse: LabTestResult = {
                 setMembers: [],
               },
               {
-                uuid: 'fe769568-16da-4d9e-9c99-fbed0a8a60f5',
+                uuid: '21AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA',
                 name: {
                   display: 'Haemoglobin',
                   uuid: 'b8b8c317-43d2-4c4b-a67d-2ef3782c53eb',
@@ -170,7 +170,7 @@ export const mockLabTestsResponse: LabTestResult = {
                     setMembers: [],
                   },
                   {
-                    uuid: 'fe769568-16da-4d9e-9c99-fbed0a8a60f5',
+                    uuid: '21AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA',
                     name: {
                       display: 'Haemoglobin',
                       uuid: 'b8b8c317-43d2-4c4b-a67d-2ef3782c53eb',
@@ -373,7 +373,7 @@ export const mockAlltestAndPanels = [
     setMembers: [],
   },
   {
-    uuid: 'fe769568-16da-4d9e-9c99-fbed0a8a60f5',
+    uuid: '21AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA',
     name: {
       display: 'Haemoglobin',
       uuid: 'b8b8c317-43d2-4c4b-a67d-2ef3782c53eb',
@@ -456,7 +456,7 @@ export const mockAlltestAndPanels = [
         setMembers: [],
       },
       {
-        uuid: 'fe769568-16da-4d9e-9c99-fbed0a8a60f5',
+        uuid: '21AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA',
         name: {
           display: 'Haemoglobin',
           uuid: 'b8b8c317-43d2-4c4b-a67d-2ef3782c53eb',
@@ -555,8 +555,10 @@ export const selfDiagnosticRequestBody = reportDate =>
 export const diagnosticReportRequestBodyWithBasedOn = reportDate =>
   `{"resourceType":"DiagnosticReport","status":"final","code":{"coding":[{"code":"07a128f7-f596-45d5-a2a9-c447bc9e5112","display":"Absolute Eosinphil Count"}]},"subject":{"reference":"Patient/123"},"issued":"${reportDate}","presentedForm":[{"url":"100/76-Patient Document-7baff463-fdaa-43d0-a402-aa948c296958.pdf","title":"test.pdf"}],"basedOn":[{"identifier":{"value":"abc-123"},"reference":"ServiceRequest","display":"Absolute Eosinphil Count"}],"performer":[{"reference":"Practitioner/1"}]}`
 export const testResultsdiagnosticReportRequestBody = reportDate =>
-  `{"resourceType":"DiagnosticReport","status":"final","code":{"coding":[{"code":"07a128f7-f596-45d5-a2a9-c447bc9e5112"}]},"subject":{"reference":"Patient/123"},"issued":"${reportDate}","contained":[{"resourceType":"Observation","id":"lab-test-result","status":"final","code":{"coding":[{"code":"07a128f7-f596-45d5-a2a9-c447bc9e5112"}]},"subject":{"reference":"Patient/123"},"valueBoolean":false}],"result":[{"reference":"#lab-test-result","type":"Observation"}],"conclusion":"Normal Report","basedOn":[{"identifier":{"value":"abc-123"},"reference":"ServiceRequest"}],"performer":[{"reference":"Practitioner/1"}]}`
+  `{"resourceType":"DiagnosticReport","status":"final","code":{"coding":[{"code":"07a128f7-f596-45d5-a2a9-c447bc9e5112"}]},"subject":{"reference":"Patient/123"},"issued":"${reportDate}","contained":[{"resourceType":"Observation","id":"lab-test-result1","status":"final","code":{"coding":[{"code":"07a128f7-f596-45d5-a2a9-c447bc9e5112","display":"Absolute Eosinphil Count"}]},"subject":{"reference":"Patient/123"},"valueBoolean":false}],"result":[{"reference":"#lab-test-result1","type":"Observation"}],"conclusion":"Normal Report","basedOn":[{"identifier":{"value":"abc-123"},"reference":"ServiceRequest"}],"performer":[{"reference":"Practitioner/1"}]}`
 export const testResultsdiagnosticNumericReportRequestBody = reportDate =>
-  `{"resourceType":"DiagnosticReport","status":"final","code":{"coding":[{"code":"1643AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"}]},"subject":{"reference":"Patient/123"},"issued":"${reportDate}","contained":[{"resourceType":"Observation","id":"lab-test-result","status":"final","code":{"coding":[{"code":"1643AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"}]},"subject":{"reference":"Patient/123"},"valueQuantity":{"value":"7"}}],"result":[{"reference":"#lab-test-result","type":"Observation"}],"conclusion":"Normal Report","basedOn":[{"identifier":{"value":"abe-123"},"reference":"ServiceRequest"}],"performer":[{"reference":"Practitioner/2"}]}`
+  `{"resourceType":"DiagnosticReport","status":"final","code":{"coding":[{"code":"21AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"}]},"subject":{"reference":"Patient/123"},"issued":"${reportDate}","contained":[{"resourceType":"Observation","id":"lab-test-result1","status":"final","code":{"coding":[{"code":"21AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA","display":"Haemoglobin"}]},"subject":{"reference":"Patient/123"},"valueQuantity":{"value":"11"}}],"result":[{"reference":"#lab-test-result1","type":"Observation"}],"conclusion":"Normal Report","basedOn":[{"identifier":{"value":"abf-123"},"reference":"ServiceRequest"}],"performer":[{"reference":"Practitioner/2"}]}`
 export const testResultsdiagnosticInterpretationReportRequestBody = reportDate =>
-  `{"resourceType":"DiagnosticReport","status":"final","code":{"coding":[{"code":"1643AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"}]},"subject":{"reference":"Patient/123"},"issued":"${reportDate}","contained":[{"resourceType":"Observation","id":"lab-test-result","status":"final","code":{"coding":[{"code":"1643AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"}]},"subject":{"reference":"Patient/123"},"interpretation":[{"coding":[{"code":"A"}]}],"valueQuantity":{"value":"7"}}],"result":[{"reference":"#lab-test-result","type":"Observation"}],"conclusion":"Normal Report","basedOn":[{"identifier":{"value":"abe-123"},"reference":"ServiceRequest"}],"performer":[{"reference":"Practitioner/2"}]}`
+  `{"resourceType":"DiagnosticReport","status":"final","code":{"coding":[{"code":"21AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"}]},"subject":{"reference":"Patient/123"},"issued":"${reportDate}","contained":[{"resourceType":"Observation","id":"lab-test-result1","status":"final","code":{"coding":[{"code":"21AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA","display":"Haemoglobin"}]},"subject":{"reference":"Patient/123"},"interpretation":[{"coding":[{"code":"A"}]}],"valueQuantity":{"value":"11"}}],"result":[{"reference":"#lab-test-result1","type":"Observation"}],"conclusion":"Normal Report","basedOn":[{"identifier":{"value":"abf-123"},"reference":"ServiceRequest"}],"performer":[{"reference":"Practitioner/2"}]}`
+export const panelTestResultsDiagnosticReportRequestBody = reportDate =>
+  `{"resourceType":"DiagnosticReport","status":"final","code":{"coding":[{"code":"5b0cdc41-7371-4c2f-a1e4-ed1bf7416a8d","display":"Anaemia panel"}]},"subject":{"reference":"Patient/123"},"issued":"${reportDate}","contained":[{"resourceType":"Observation","id":"lab-test-result1","status":"final","code":{"coding":[{"code":"07a128f7-f596-45d5-a2a9-c447bc9e5112","display":"Absolute Eosinphil Count"}]},"subject":{"reference":"Patient/123"},"valueQuantity":{"value":"40"}},{"resourceType":"Observation","id":"lab-test-result2","status":"final","code":{"coding":[{"code":"21AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA","display":"Haemoglobin"}]},"subject":{"reference":"Patient/123"},"valueCodeableConcept":{"coding":[{"code":"703AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA","display":"Positive"}]}}],"result":[{"reference":"#lab-test-result1","type":"Observation"},{"reference":"#lab-test-result2","type":"Observation"}],"basedOn":[{"identifier":{"value":"5b0cdc41-7371-4c2f-a1e4-ed1bf7416a8d"},"reference":"ServiceRequest","display":"Anaemia panel"}]}`

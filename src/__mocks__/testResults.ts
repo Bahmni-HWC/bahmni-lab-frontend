@@ -93,11 +93,11 @@ export const mockTestResultResponse: any = {
 
 export const mockPanelTestResult = {
   data: {
-    uuid: '161430AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA',
+    uuid: '5b0cdc41-7371-4c2f-a1e4-ed1bf7416a8d',
     name: {
-      display: 'Routine blood panel',
-      uuid: '110966BBBBBBBBBBBBBBBBBBBBBBBBBBBBBB',
-      name: 'Routine blood panel',
+      display: 'Anaemia Panel',
+      uuid: '8ce76a2c-e63d-4358-aabb-f8c5a6239fbd',
+      name: 'Anaemia Panel',
       locale: 'en',
       localePreferred: true,
       conceptNameType: 'FULLY_SPECIFIED',
@@ -106,9 +106,9 @@ export const mockPanelTestResult = {
     },
     names: [
       {
-        display: 'Routine blood panel',
+        display: 'Anaemia Panel',
         uuid: '110966BBBBBBBBBBBBBBBBBBBBBBBBBBBBBB',
-        name: 'Routine blood panel',
+        name: 'Anaemia Panel',
         locale: 'en',
         localePreferred: true,
         conceptNameType: 'FULLY_SPECIFIED',
@@ -149,11 +149,11 @@ export const mockPanelTestResult = {
     answers: [],
     setMembers: [
       {
-        uuid: '1015AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA',
+        uuid: '07a128f7-f596-45d5-a2a9-c447bc9e5112',
         name: {
-          display: 'Hematocrit',
-          uuid: '1066BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB',
-          name: 'Hematocrit',
+          display: 'Absolute Eosinphil Count',
+          uuid: 'fd2ec116-74c9-4d48-86cf-1c7e8aa1a748',
+          name: 'Absolute Eosinphil Count',
           locale: 'en',
           localePreferred: true,
           conceptNameType: 'FULLY_SPECIFIED',
@@ -180,7 +180,7 @@ export const mockPanelTestResult = {
             conceptNameType: 'FULLY_SPECIFIED',
             links: [],
             resourceVersion: '1.9',
-          }
+          },
         ],
         set: false,
         datatype: {
@@ -229,90 +229,10 @@ export const mockPanelTestResult = {
         resourceVersion: '2.0',
       },
       {
-        uuid: '1026AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA',
+        uuid: '21AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA',
         name: {
-          display: 'Differential',
-          uuid: '1079BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB',
-          name: 'Differential',
-          locale: 'en',
-          localePreferred: true,
-          conceptNameType: 'FULLY_SPECIFIED',
-          links: [],
-          resourceVersion: '1.9',
-        },
-        names: [
-          {
-            display: 'Differential',
-            uuid: '1079BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB',
-            name: 'Differential',
-            locale: 'en',
-            localePreferred: true,
-            conceptNameType: 'FULLY_SPECIFIED',
-            links: [],
-            resourceVersion: '1.9',
-          },
-          {
-            display: 'Diff',
-            uuid: '86758BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB',
-            name: 'Diff',
-            locale: 'en',
-            localePreferred: false,
-            conceptNameType: 'SHORT',
-            links: [],
-            resourceVersion: '1.9',
-          },
-        ],
-        set: true,
-        datatype: {
-          uuid: '8d4a4c94-c2cc-11de-8d13-0010c6dffd0f',
-          display: 'N/A',
-          name: 'N/A',
-          description:
-            'Not associated with a datatype (e.g., term answers, sets)',
-          hl7Abbreviation: 'ZZ',
-          retired: false,
-          links: [],
-          resourceVersion: '1.8',
-        },
-        conceptClass: {
-          uuid: '8d492026-c2cc-11de-8d13-0010c6dffd0f',
-          display: 'LabSet',
-          name: 'LabSet',
-          description: 'Panels',
-          retired: false,
-          links: [],
-          resourceVersion: '1.8',
-        },
-        hiNormal: null,
-        hiAbsolute: null,
-        hiCritical: null,
-        lowNormal: null,
-        lowAbsolute: null,
-        lowCritical: null,
-        units: null,
-        allowDecimal: null,
-        handler: null,
-        descriptions: [
-          {
-            display:
-              'Describes the relative distribution of the different types of white blood cells',
-            uuid: '1028FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF',
-            description:
-              'Describes the relative distribution of the different types of white blood cells',
-            locale: 'en',
-            links: [],
-            resourceVersion: '1.9',
-          },
-        ],
-        answers: [],
-        setMembers: [],
-        resourceVersion: '2.0',
-      },
-      {
-        uuid: '1643AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA',
-        name: {
-          display: 'Rapid test for malaria',
-          uuid: '1923BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB',
+          display: 'Haemoglobin',
+          uuid: 'b8b8c317-43d2-4c4b-a67d-2ef3782c53eb',
           name: 'Rapid test for malaria',
           locale: 'en',
           localePreferred: true,
@@ -425,26 +345,61 @@ export const mockPanelTestResult = {
 
 export const mockTestResult = {
   data: {
-    uuid: '1643AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA',
+    uuid: '21AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA',
     name: {
-      display: 'Dummy test',
-      uuid: '1923BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB',
-      name: 'Dummy test',
+      display: 'Haemoglobin',
+      uuid: '23BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB',
+      name: 'Haemoglobin',
       locale: 'en',
       localePreferred: true,
       conceptNameType: 'FULLY_SPECIFIED',
-      links: [],
       resourceVersion: '1.9',
     },
     names: [
       {
-        display: 'RDT Malaria',
-        uuid: '86926BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB',
-        name: 'RDT Malaria',
+        display: 'Hemoglobin',
+        uuid: '110964BBBBBBBBBBBBBBBBBBBBBBBBBBBBBB',
+        name: 'Hemoglobin',
         locale: 'en',
         localePreferred: false,
-        conceptNameType: 'SHORT',
-        links: [],
+        conceptNameType: null,
+        links: [
+          {
+            rel: 'self',
+            uri:
+              'http://localhost:8080/openmrs/ws/rest/v1/concept/21AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA/name/110964BBBBBBBBBBBBBBBBBBBBBBBBBBBBBB',
+            resourceAlias: 'name',
+          },
+          {
+            rel: 'full',
+            uri:
+              'http://localhost:8080/openmrs/ws/rest/v1/concept/21AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA/name/110964BBBBBBBBBBBBBBBBBBBBBBBBBBBBBB?v=full',
+            resourceAlias: 'name',
+          },
+        ],
+        resourceVersion: '1.9',
+      },
+      {
+        display: 'Haemoglobin',
+        uuid: '23BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB',
+        name: 'Haemoglobin',
+        locale: 'en',
+        localePreferred: true,
+        conceptNameType: 'FULLY_SPECIFIED',
+        links: [
+          {
+            rel: 'self',
+            uri:
+              'http://localhost:8080/openmrs/ws/rest/v1/concept/21AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA/name/23BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB',
+            resourceAlias: 'name',
+          },
+          {
+            rel: 'full',
+            uri:
+              'http://localhost:8080/openmrs/ws/rest/v1/concept/21AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA/name/23BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB?v=full',
+            resourceAlias: 'name',
+          },
+        ],
         resourceVersion: '1.9',
       },
     ],
@@ -469,61 +424,41 @@ export const mockTestResult = {
       links: [],
       resourceVersion: '1.8',
     },
-    hiNormal: null,
+    hiNormal: 17.8,
     hiAbsolute: null,
     hiCritical: null,
-    lowNormal: null,
-    lowAbsolute: null,
-    lowCritical: null,
-    units: null,
-    allowDecimal: null,
+    lowNormal: 10.4,
+    lowAbsolute: 0,
+    lowCritical: 7,
+    units: 'g/dL',
+    allowDecimal: true,
     handler: null,
     descriptions: [
       {
-        display: 'Test for rapid diagnosis of Malaria.',
-        uuid: '1483FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF',
-        description: 'Test for rapid diagnosis of Malaria.',
+        display:
+          'The iron-containing respiratory pigment in red blood cells of vertebrates, consisting of about 6 percent heme and 94 percent globin.',
+        uuid: '21FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF',
+        description:
+          'The iron-containing respiratory pigment in red blood cells of vertebrates, consisting of about 6 percent heme and 94 percent globin.',
         locale: 'en',
         links: [
           {
             rel: 'self',
             uri:
-              'http://localhost/openmrs/ws/rest/v1/concept/1643AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA/description/1483FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF',
+              'http://localhost:8080/openmrs/ws/rest/v1/concept/21AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA/description/21FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF',
+            resourceAlias: 'description',
+          },
+          {
+            rel: 'full',
+            uri:
+              'http://localhost:8080/openmrs/ws/rest/v1/concept/21AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA/description/21FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF?v=full',
             resourceAlias: 'description',
           },
         ],
         resourceVersion: '1.9',
       },
     ],
-    answers: [
-      {
-        uuid: '703AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA',
-        name: {
-          display: 'Positive',
-          uuid: '737BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB',
-          name: 'Positive',
-          locale: 'en',
-          localePreferred: true,
-          conceptNameType: 'FULLY_SPECIFIED',
-          links: [],
-          resourceVersion: '1.9',
-        },
-        names: [
-          {
-            display: 'Positive',
-            uuid: '737BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB',
-            name: 'Positive',
-            locale: 'en',
-            localePreferred: true,
-            conceptNameType: 'FULLY_SPECIFIED',
-            links: [],
-            resourceVersion: '1.9',
-          },
-        ],
-        displayString: 'Positive',
-        resourceVersion: '2.0',
-      },
-    ],
+    answers: [],
     setMembers: [],
     resourceVersion: '2.0',
   },
@@ -531,9 +466,10 @@ export const mockTestResult = {
 
 export const mockSelectedPendingOrder = [
   {
-    id: '161430AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA',
-    testName: 'Routine blood panel',
+    id: '5b0cdc41-7371-4c2f-a1e4-ed1bf7416a8d',
+    testName: 'Anaemia panel',
     date: 'May 03, 2022',
     orderedBy: 'Superman',
+    conceptUuid: '5b0cdc41-7371-4c2f-a1e4-ed1bf7416a8d',
   },
 ]

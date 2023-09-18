@@ -867,9 +867,9 @@ describe('Patient lab details', () => {
       expect(screen.getByText(/Pending lab orders/i)).toBeInTheDocument()
     })
 
-    expect(screen.getByRole('cell', {name: 'Dummy Test'})).toBeInTheDocument()
+    expect(screen.getByRole('cell', {name: 'Haemoglobin'})).toBeInTheDocument()
 
-    userEvent.click(screen.getAllByRole('checkbox', {name: /Select row/i})[2])
+    userEvent.click(screen.getAllByRole('checkbox', {name: /Select row/i})[3])
 
     userEvent.click(screen.getByRole('button', {name: /enter test results/i}))
 
@@ -880,7 +880,7 @@ describe('Patient lab details', () => {
     await waitFor(() =>
       expect(screen.getByPlaceholderText(/Enter value/i)).toBeInTheDocument(),
     )
-    userEvent.type(screen.getByPlaceholderText(/Enter value/i), '7')
+    userEvent.type(screen.getByPlaceholderText(/Enter value/i), '11')
 
     userEvent.click(
       screen.getByRole('textbox', {
@@ -948,9 +948,9 @@ describe('Patient lab details', () => {
       expect(screen.getByText(/Pending lab orders/i)).toBeInTheDocument()
     })
 
-    expect(screen.getByRole('cell', {name: 'Dummy Test'})).toBeInTheDocument()
+    expect(screen.getByRole('cell', {name: 'Haemoglobin'})).toBeInTheDocument()
 
-    userEvent.click(screen.getAllByRole('checkbox', {name: /Select row/i})[2])
+    userEvent.click(screen.getAllByRole('checkbox', {name: /Select row/i})[3])
 
     userEvent.click(screen.getByRole('button', {name: /enter test results/i}))
 
@@ -961,7 +961,7 @@ describe('Patient lab details', () => {
     await waitFor(() =>
       expect(screen.getByPlaceholderText(/Enter value/i)).toBeInTheDocument(),
     )
-    userEvent.type(screen.getByPlaceholderText(/Enter value/i), '7')
+    userEvent.type(screen.getByPlaceholderText(/Enter value/i), '11')
 
     userEvent.click(screen.getAllByLabelText(/abnormal/i)[0])
 

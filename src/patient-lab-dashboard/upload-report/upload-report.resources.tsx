@@ -163,6 +163,7 @@ export function saveTestDiagnosticReport(
   encounter,
   patientUuid: string,
   performerUuid: string,
+  selectedTest: LabTest,
   reportDate: Date,
   reportConclusion: string,
   ac: AbortController,
@@ -171,7 +172,7 @@ export function saveTestDiagnosticReport(
     string,
     {value: string; abnormal?: boolean; codableConceptUuid?: string}
   >,
-  dataType: Datatype,
+  dataType: Datatype[],
 ) {
   let basedOn: Array<BasedOnType> = null
   if (selectedPendingOrder)
@@ -182,6 +183,78 @@ export function saveTestDiagnosticReport(
         display: selectedPendingOrder.testName,
       },
     ]
+
+  let containedArray: Contained[] = []
+
+  const createObservation = (item, index) => {
+    const observation: Contained = {
+      resourceType: 'Observation',
+      id: `lab-test-result${index + 1}`,
+      status: 'final',
+      code: {
+        coding: [
+          {
+            code: item.uuid,
+            display: item.name.display,
+          },
+        ],
+      },
+      subject: {reference: `Patient/${patientUuid}`},
+    }
+
+    const labItem = labResult.get(item.uuid)
+
+    if (labItem?.abnormal === true) {
+      observation.interpretation = [
+        {
+          coding: [
+            {
+              code: 'A',
+            },
+          ],
+        },
+      ]
+    }
+
+    switch (dataType[index]?.name) {
+      case 'Boolean':
+        observation.valueBoolean = labItem?.value.toLowerCase() === 'true'
+        break
+      case 'Numeric':
+        observation.valueQuantity = {
+          value: labItem?.value,
+        }
+        break
+      case 'Coded':
+        observation.valueCodeableConcept = {
+          coding: [
+            {
+              code: labItem?.codableConceptUuid,
+              display: labItem?.value,
+            },
+          ],
+        }
+        break
+      default:
+        observation.valueString = labItem?.value
+    }
+
+    return observation
+  }
+
+  if (selectedTest.setMembers && selectedTest.setMembers.length > 0) {
+    containedArray = selectedTest.setMembers.map(createObservation)
+  } else {
+    const observation = createObservation(selectedTest, 0)
+    containedArray.push(observation)
+  }
+
+  const resultArray = containedArray.map(item => {
+    return {
+      reference: `#${item.id}`,
+      type: 'Observation',
+    }
+  })
 
   const requestBody: TestResultDiagnosticReportRequestType = {
     resourceType: 'DiagnosticReport',
@@ -198,66 +271,9 @@ export function saveTestDiagnosticReport(
       reference: 'Patient/' + patientUuid,
     },
     issued: reportDate,
-    contained: [
-      {
-        resourceType: 'Observation',
-        id: 'lab-test-result',
-        status: 'final',
-        code: {
-          coding: [
-            {
-              code: selectedPendingOrder.conceptUuid,
-              display: selectedPendingOrder.testName,
-            },
-          ],
-        },
-        subject: {
-          reference: 'Patient/' + patientUuid,
-        },
-      },
-    ],
-    result: [
-      {
-        reference: '#lab-test-result',
-        type: 'Observation',
-      },
-    ],
+    contained: containedArray,
+    result: resultArray,
   }
-  if (labResult.get(selectedPendingOrder.conceptUuid).abnormal === true) {
-    requestBody.contained[0].interpretation = [
-      {
-        coding: [
-          {
-            code: 'A',
-          },
-        ],
-      },
-    ]
-  }
-  if (dataType.name == 'Boolean') {
-    requestBody.contained[0].valueBoolean =
-      labResult.get(selectedPendingOrder.conceptUuid)?.value.toLowerCase() ==
-      'true'
-  } else if (dataType.name == 'Numeric') {
-    requestBody.contained[0].valueQuantity = {
-      value: labResult.get(selectedPendingOrder.conceptUuid)?.value,
-    }
-  } else if (dataType.name == 'Coded') {
-    requestBody.contained[0].valueCodeableConcept = {
-      coding: [
-        {
-          code: labResult.get(selectedPendingOrder.conceptUuid)
-            ?.codableConceptUuid,
-          display: labResult.get(selectedPendingOrder.conceptUuid)?.value,
-        },
-      ],
-    }
-  } else {
-    requestBody.contained[0].valueString = labResult.get(
-      selectedPendingOrder.conceptUuid,
-    )?.value
-  }
-
   if (reportConclusion) {
     requestBody.conclusion = reportConclusion
   }

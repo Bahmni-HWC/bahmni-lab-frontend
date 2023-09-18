@@ -17,7 +17,13 @@ export const mockPendingLabOrder = {
       testName: 'Dummy Test',
       date: 'May 03, 2022',
       orderedBy: 'Superman',
-    }
+    },
+    {
+      id: 'abf-123',
+      testName: 'Haemoglobin',
+      date: 'May 03, 2022',
+      orderedBy: 'Superman',
+    },
   ],
   goTo: jest.fn(),
   currentPage: 1,

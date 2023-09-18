@@ -62,7 +62,6 @@ describe('Paginated Table', () => {
               patientUuid={mockPatientUuid}
               onButtonClick={false}
               onEnterResultButtonClick={false}
-
             />
           </PendingLabOrdersProvider>
         </BrowserRouter>
@@ -98,7 +97,7 @@ describe('Paginated Table', () => {
         name: /select row/i,
       }).length,
     ).toEqual(1)
-    expect(screen.getByText(/3 \/ 3 items/i)).toBeInTheDocument()
+    expect(screen.getByText(/4 \/ 4 items/i)).toBeInTheDocument()
 
     userEvent.click(
       screen.getByRole('checkbox', {
@@ -165,7 +164,7 @@ describe('Paginated Table', () => {
 
     userEvent.click(screen.getByRole('checkbox', {name: /select all rows/i}))
 
-    expect(screen.getByRole('checkbox', { name: /select row/i })).toBeChecked()
+    expect(screen.getByRole('checkbox', {name: /select row/i})).toBeChecked()
   })
   it('should display error message when call for orders data is unsuccessful', async () => {
     const mockedOpenmrsFetch = openmrsFetch as jest.Mock

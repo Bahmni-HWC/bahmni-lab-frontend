@@ -8,17 +8,32 @@ import {
   mockSelectedPendingOrder,
   mockTestResult,
 } from '../../__mocks__/testResults'
-import {LabTestResultsProvider} from '../../context/lab-test-results-context'
+import {
+  LabTestResultsProvider,
+  useAllTestAndPanel,
+} from '../../context/lab-test-results-context'
 import {PendingLabOrdersProvider} from '../../context/pending-orders-context'
 import {UploadReportProvider} from '../../context/upload-report-context'
-import {localStorageMock} from '../../utils/test-utils'
+import {localStorageMock, verifyApiCall} from '../../utils/test-utils'
 import TestResults from './test-results'
+import {
+  mockAlltestAndPanels,
+  panelTestResultsDiagnosticReportRequestBody,
+} from '../../__mocks__/selectTests.mock'
+import {saveDiagnosticReportURL} from '../../utils/api-utils'
+import {mockDoctorNames} from '../../__mocks__/doctorNames.mock'
 
 jest.mock('../../context/pending-orders-context', () => ({
   ...jest.requireActual('../../context/pending-orders-context'),
   usePendingLabOrderContext: jest.fn(() => ({
     selectedPendingOrder: mockSelectedPendingOrder,
   })),
+}))
+
+jest.mock('../../context/lab-test-results-context', () => ({
+  ...jest.requireActual('../../context/lab-test-results-context'),
+  useLabTestResultsContext: jest.fn(),
+  useAllTestAndPanel: jest.fn(),
 }))
 
 describe('TestResults Report', () => {
@@ -30,6 +45,10 @@ describe('TestResults Report', () => {
       value: 'bahmni.user.location={"uuid":"locationuuid123"}',
     })
     Object.defineProperty(window, 'localStorage', {value: localStorageMock})
+    const mockUseAllTestAndPanel = useAllTestAndPanel as jest.Mock
+    mockUseAllTestAndPanel.mockImplementation(() => ({
+      allTestsAndPanels: mockAlltestAndPanels,
+    }))
   })
   afterEach(() => {
     jest.clearAllMocks(), localStorage.clear()
@@ -194,7 +213,7 @@ describe('TestResults Report', () => {
       screen.getByRole('button', {name: /save and upload/i}),
     ).toBeDisabled()
 
-    expect(screen.getAllByRole('checkbox', {name: /Abnormal/i}).length).toBe(3)
+    expect(screen.getAllByRole('checkbox', {name: /Abnormal/i}).length).toBe(2)
 
     userEvent.type(screen.getAllByPlaceholderText(/Enter value/i)[0], '6')
 
@@ -232,7 +251,7 @@ describe('TestResults Report', () => {
         screen.getAllByPlaceholderText(/Enter value/i)[0],
       ).toBeInTheDocument(),
     )
-    expect(screen.getAllByPlaceholderText(/Enter value/i).length).toBe(2)
+    expect(screen.getAllByPlaceholderText(/Enter value/i).length).toBe(1)
     expect(screen.getByText(/select an answer/i)).toBeInTheDocument()
   })
   it('should indicate error message when user enters invalid data', async () => {
@@ -261,7 +280,6 @@ describe('TestResults Report', () => {
     ).toBeDisabled()
 
     userEvent.type(screen.getAllByPlaceholderText(/Enter value/i)[0], 'numeric')
-    userEvent.type(screen.getAllByPlaceholderText(/Enter value/i)[1], '22')
     expect(screen.getByText(/select an answer/i)).toBeInTheDocument()
 
     userEvent.click(
@@ -335,6 +353,59 @@ describe('TestResults Report', () => {
     expect(
       screen.getByRole('button', {name: /save and upload/i}),
     ).toBeDisabled()
+  })
+  it('should save test results when user enter test results for panel test and click save and upload button', async () => {
+    localStorage.setItem('i18nextLng', 'en')
+    const mockedOpenmrsFetch = openmrsFetch as jest.Mock
+    mockedOpenmrsFetch
+      .mockReturnValueOnce(mockDoctorNames)
+      .mockReturnValueOnce(mockPanelTestResult)
+      .mockReturnValueOnce(mockAlltestAndPanels)
+      .mockReturnValueOnce(mockSelectedPendingOrder)
+
+    const mockedLayout = useLayoutType as jest.Mock
+    mockedLayout.mockReturnValue('desktop')
+
+    renderWithContextProvider(
+      <TestResults
+        closeHandler={closeHandler}
+        saveHandler={saveHandler}
+        header={'Test Header'}
+        patientUuid={'123'}
+      />,
+    )
+
+    userEvent.click(
+      screen.getByRole('textbox', {
+        name: /report date/i,
+      }),
+    )
+    const currentDay: string = getFormatedDate(0)
+    userEvent.click(screen.getByLabelText(currentDay))
+
+    await waitFor(() =>
+      expect(screen.queryByText(/loading \.\.\./i)).not.toBeInTheDocument(),
+    )
+
+    const input = await screen.findByText('Hct [32.3 - 51.9 %]')
+    userEvent.type(input, '40')
+    userEvent.click(await screen.findByText('Select an answer'))
+    userEvent.click(await screen.findByText('Positive'))
+
+    const saveButton = screen.getByRole('button', {name: /save and upload/i})
+    expect(saveButton).not.toBeDisabled()
+    userEvent.click(saveButton)
+
+    await waitFor(() => {
+      expect(mockedOpenmrsFetch).toBeCalledTimes(3)
+    })
+    verifyApiCall(
+      saveDiagnosticReportURL,
+      'POST',
+      panelTestResultsDiagnosticReportRequestBody(
+        new Date(currentDay).toISOString(),
+      ),
+    )
   })
 })
 

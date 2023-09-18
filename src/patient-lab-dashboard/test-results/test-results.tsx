@@ -8,7 +8,7 @@ import {
   TextInput,
 } from 'carbon-components-react'
 import dayjs from 'dayjs'
-import React, {useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import useSWR from 'swr'
 import Overlay from '../../common/overlay'
 import {usePendingLabOrderContext} from '../../context/pending-orders-context'
@@ -19,6 +19,7 @@ import {getTestName} from '../../utils/helperFunctions'
 import DoctorListDropdown from '../doctors-list-dropdown/doctor-list-dropdown'
 import {saveTestDiagnosticReport} from '../upload-report/upload-report.resources'
 import {TestResultsLabOrder} from '../../types'
+import {useAllTestAndPanel} from '../../context/lab-test-results-context'
 
 interface TestResultProps {
   saveHandler: Function
@@ -49,11 +50,23 @@ const TestResults: React.FC<TestResultProps> = ({
   >(true)
   const [isSaveButtonClicked, setIsSaveButtonClicked] = useState(false)
   const [labResult, setLabResult] = useState(new Map())
-
   const testResultData = []
+  const [selectedTests, setSelectedTests] = useState([])
+  const {allTestsAndPanels} = useAllTestAndPanel()
+  useEffect(() => {
+    const filteredTests = allTestsAndPanels.filter(
+      pendingOrderTest =>
+        selectedPendingOrder.findIndex(
+          tempPendingTest =>
+            tempPendingTest?.conceptUuid === pendingOrderTest.uuid,
+        ) > -1,
+    )
+    setSelectedTests(filteredTests)
+  }, [selectedPendingOrder, allTestsAndPanels])
   const handleDiscard = () => {
     setReportDate(null)
     setReportConclusion('')
+    setSelectedTests([])
     setDoctor(null)
     setShowReportConclusionLabel(true)
     setLabResult(new Map())
@@ -73,11 +86,18 @@ const TestResults: React.FC<TestResultProps> = ({
     !reportDate || !doctor || !isValidDataPresent() || isSaveButtonClicked
 
   const getTestData = test => {
-    for (let index = 0; index < testResultData.length; index++) {
-      if (testResultData[index].data.uuid === test.conceptUuid) {
-        return testResultData[index].data
-      }
+    const matchingData = testResultData.find(
+      item => item.data.uuid === test.uuid,
+    )
+
+    if (matchingData) {
+      const dataType =
+        matchingData.data.setMembers.length > 0
+          ? matchingData.data.setMembers.map(member => member.datatype)
+          : [matchingData.data.datatype]
+      return dataType
     }
+    return []
   }
 
   const isInvalid = test => {
@@ -94,8 +114,7 @@ const TestResults: React.FC<TestResultProps> = ({
   }
 
   const isValidDataPresent = () => {
-    if (labResult.size == 0 || labResult.size !== selectedPendingOrder.length)
-      return false
+    if (labResult.size == 0) return false
 
     for (let mapEntry of labResult.values()) {
       if (mapEntry.value === '') return false
@@ -134,17 +153,18 @@ const TestResults: React.FC<TestResultProps> = ({
     const ac = new AbortController()
     let allSuccess: boolean = true
     try {
-      for (let index = 0; index < selectedPendingOrder.length; index++) {
+      for (let index = 0; index < selectedTests.length; index++) {
         const response = await saveTestDiagnosticReport(
           undefined,
           patientUuid,
           doctor.uuid,
+          selectedTests[index],
           reportDate,
           reportConclusion,
           ac,
           selectedPendingOrder[index],
           labResult,
-          getTestData(selectedPendingOrder[index]).datatype,
+          getTestData(selectedTests[index]),
         )
         if (allSuccess && !response.ok) {
           allSuccess = false
