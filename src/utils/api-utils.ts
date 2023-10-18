@@ -31,6 +31,8 @@ export const auditLogGlobalPropertyURL =
   '/ws/rest/v1/bahmnicore/sql/globalproperty?property=bahmni.enableAuditLog'
 
 export const configUrl = '/../bahmni_config/openmrs/apps/registration/app.json'
+export const activePatientWithLabOrdersURL = locationUuid =>
+  `/ws/rest/v1/bahmnicore/sql?location_uuid=${locationUuid}&q=emrapi.sqlSearch.activePatientsWithLabOrders&v=full`
 
 export const getPayloadForUserLogin = (username: string): AuditMessage => ({
   eventType: 'ACCESSED_LAB_ENTRY',
