@@ -44,10 +44,26 @@ function setupOpenMRS() {
     pages: [
       {
         route: /^[A-Za-z0-9-]+/,
-        load: getAsyncLifecycle(() => import('./patient-lab-dashboard/patient-lab-root.component'), {
-          featureName: 'patient-lab-root',
-          moduleName: labliteModuleName,
-        }),
+        load: getAsyncLifecycle(
+          () => import('./patient-lab-dashboard/patient-lab-root.component'),
+          {
+            featureName: 'patient-lab-root',
+            moduleName: labliteModuleName,
+          },
+        ),
+      },
+      {
+        route: /^patient-lab-dashboard\/patient-lab-details\/[A-Za-z0-9-]+/,
+        load: getAsyncLifecycle(
+          () =>
+            import(
+              './patient-lab-dashboard/patient-lab-details/patient-lab-details'
+            ),
+          {
+            featureName: 'patient-lab-details',
+            moduleName: labliteModuleName,
+          },
+        ),
       },
     ],
     extensions: [
